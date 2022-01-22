@@ -50,7 +50,7 @@ async function startConnection(chat) {
         $('#addNewGroup').show();
 
         chat.connection.on('userData', (user) => {
-            window.chat.state.id = user.id;
+            window.chat.state = user;
         });
     
         loadRooms(chat.connection);
@@ -84,7 +84,7 @@ async function createChatRoom() {
 }
 
 async function addToChatRoom(chatRoomName) {
-    chat.connection.invoke("AddToGroup", (chatRoomName))
+    chat.connection.invoke("AddToChatRoom", (chatRoomName))
         .catch(err => console.log(x = err));
 }
 
@@ -136,6 +136,7 @@ function openChat(e) {
 
     let chatsContainer = $('.chats_wrapper');
     chatsContainer.find('> div').hide();
+    addToChatRoom(room.name);
     chatsContainer.find(`[data-id="${room.id}"]`).show();
 }
 

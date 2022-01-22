@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.Financial
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - UserCases", "1 - UserCases", "{23836729-D462-4136-AAFF-E54EB6145267}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobsity.Challenge.FinancialChat.UseCases", "Jobsity.Challenge.FinancialChat.UseCases\Jobsity.Challenge.FinancialChat.UseCases.csproj", "{769AB6A9-BD01-40BE-BEC3-40F820AA7772}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.UseCases", "Jobsity.Challenge.FinancialChat.UseCases\Jobsity.Challenge.FinancialChat.UseCases.csproj", "{769AB6A9-BD01-40BE-BEC3-40F820AA7772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobsity.Challenge.FinancialChat.Interfaces", "Jobsity.Challenge.FinancialChat.Interfaces\Jobsity.Challenge.FinancialChat.Interfaces.csproj", "{5A62B991-C45D-4EA9-8CDA-817C7A4C9839}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobsity.Challenge.FinancialChat.CrossCutting", "Jobsity.Challenge.FinancialChat.CrossCutting\Jobsity.Challenge.FinancialChat.CrossCutting.csproj", "{F24B7795-013C-43B9-B11C-CCC05A61B4DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,14 @@ Global
 		{769AB6A9-BD01-40BE-BEC3-40F820AA7772}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{769AB6A9-BD01-40BE-BEC3-40F820AA7772}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{769AB6A9-BD01-40BE-BEC3-40F820AA7772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A62B991-C45D-4EA9-8CDA-817C7A4C9839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A62B991-C45D-4EA9-8CDA-817C7A4C9839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A62B991-C45D-4EA9-8CDA-817C7A4C9839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A62B991-C45D-4EA9-8CDA-817C7A4C9839}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F24B7795-013C-43B9-B11C-CCC05A61B4DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F24B7795-013C-43B9-B11C-CCC05A61B4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F24B7795-013C-43B9-B11C-CCC05A61B4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F24B7795-013C-43B9-B11C-CCC05A61B4DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +62,8 @@ Global
 		{5A665FDF-0BC3-415C-9D38-00C8CFE04748} = {12F1C2CF-A017-4C55-942B-BE6F48379430}
 		{C7F87262-8309-4E1F-81FB-A83420E929AF} = {4D4016C2-D6DD-4DE0-AA9F-2AF49545365D}
 		{769AB6A9-BD01-40BE-BEC3-40F820AA7772} = {23836729-D462-4136-AAFF-E54EB6145267}
+		{5A62B991-C45D-4EA9-8CDA-817C7A4C9839} = {12F1C2CF-A017-4C55-942B-BE6F48379430}
+		{F24B7795-013C-43B9-B11C-CCC05A61B4DE} = {4D4016C2-D6DD-4DE0-AA9F-2AF49545365D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3B3AEDC-0DB9-491A-BDBB-0DD22CDFFEE8}

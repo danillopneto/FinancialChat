@@ -1,18 +1,19 @@
 ﻿using Jobsity.Challenge.FinancialChat.Domain.Entities;
+using Jobsity.Challenge.FinancialChat.Interfaces.Repositories;
 
 namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
 {
-    public class ChatRoomRepository
+    public class ChatRoomRepository : IChatRoomRepository
     {
-        private readonly List<ChatRoom> rooms = new();
+        private readonly List<ChatRoom> _rooms = new();
 
-        public ChatRoom AddUser(string roomName, User user)
+        public async Task<ChatRoom> AddUser(string roomName, User user)
         {
-            var room = rooms.FirstOrDefault(r => r.Name == roomName);
+            var room = _rooms.FirstOrDefault(r => r.Name == roomName);
             if (room is null)
             {
                 room = new ChatRoom(roomName, user);
-                rooms.Add(room);
+                _rooms.Add(room);
             }
             else if (!room.Users.Any(x => x.Id == user.Id))
             {
@@ -22,30 +23,33 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
             return room;
         }
 
-        public List<ChatRoom> GetAllRooms() => rooms;
+        public async Task<IEnumerable<ChatRoom>> GetAllRooms() => _rooms;
 
-        public void RemoveUser(string roomName, User user)
+        public async Task<ChatRoom> GetRoomById(Guid id)
         {
-            var room = rooms.FirstOrDefault(r => r.Name == roomName);
+            return _rooms.FirstOrDefault(r => r.Id == id);
+        }
+
+        public async Task<ChatRoom> GetRoomByName(string groupName)
+        {
+            return _rooms.FirstOrDefault(r => r.Name == groupName);
+        }
+
+        public async Task<bool> HasUser(string groupName, User user)
+        {
+            var room = await GetRoomByName(groupName);
+            return room is not null &&
+                   room.Users is not null &&
+                   room.Users.Any(u => u.Id == user.Id);
+        }
+
+        public async Task RemoveUser(string roomName, User user)
+        {
+            var room = _rooms.FirstOrDefault(r => r.Name == roomName);
             if (room is not null)
             {
                 room.Users.Remove(user);
             }
-        }
-
-        public ChatRoom GetRoomById(Guid id)
-        {
-            return rooms.FirstOrDefault(r => r.Id == id);
-        }
-
-        public ChatRoom GetRoomByName(string groupName)
-        {
-            return rooms.FirstOrDefault(r => r.Name == groupName);
-        }
-
-        public bool? HasUser(string groupName, User user)
-        {
-            return GetRoomByName(groupName)?.Users?.Any(u => u.Id == user.Id);
         }
     }
 }

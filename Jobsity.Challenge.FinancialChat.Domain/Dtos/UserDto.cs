@@ -1,6 +1,6 @@
-﻿namespace Jobsity.Challenge.FinancialChat.Domain.Entities
+﻿namespace Jobsity.Challenge.FinancialChat.Domain.Dtos
 {
-    public record class User
+    public class UserDto
     {
         public string ConnectionId { get; set; }
 
