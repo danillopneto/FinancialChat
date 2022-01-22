@@ -9,8 +9,10 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Contexts
           : base(options)
         { }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         public DbSet<ChatRoom> Rooms { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
 }

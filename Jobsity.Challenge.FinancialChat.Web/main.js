@@ -24,7 +24,8 @@ function createChatController() {
             var chatMessage = {
                 sender: this.state,
                 message: to.message,
-                destination: to.destination
+                destination: to.destination,
+                timestamp: new Date()
             };
 
             this.connection.invoke("SendMessage", (chatMessage))
@@ -120,6 +121,9 @@ async function loadRooms(connection) {
                     `
         
                     containerChats.append(`<div data-id="${room.id}" class="roomChat">${chat}</div>`);
+                    room.messages.forEach((m) => {
+                        insertMessage(m);
+                    });
                 }
             } else {
                 $(`section.room[data-id="${room.id}"] .room_count`).html(`(${room.users.length} active users)`);
@@ -147,7 +151,7 @@ function insertMessage(chatData) {
     <div class="message ${sender}">
         ${sender != 'room' ? `<b>${chatData.sender.name}</b>` : ''}
         <label>${chatData.message}<label>
-        <span>${new Date().toLocaleTimeString()}</span>
+        <span>${new Date(chatData.timestamp).toLocaleTimeString()}</span>
     </div>
     `;
 

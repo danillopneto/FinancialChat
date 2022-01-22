@@ -1,4 +1,6 @@
-﻿namespace Jobsity.Challenge.FinancialChat.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Jobsity.Challenge.FinancialChat.Domain.Entities
 {
     public class ChatRoom
     {
@@ -13,7 +15,10 @@
             Users = new List<User> { user };
         }
 
+        [Key]
         public Guid Id { get; set; }
+
+        public List<ChatMessage> Messages { get; set; }
 
         public string Name { get; set; }
 

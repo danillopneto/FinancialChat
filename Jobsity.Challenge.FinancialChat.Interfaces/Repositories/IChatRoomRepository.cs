@@ -17,5 +17,7 @@ namespace Jobsity.Challenge.FinancialChat.Interfaces.Repositories
         Task<bool> HasUser(string roomName, User user);
 
         Task RemoveUser(string roomName, User user);
+
+        Task SaveNewMessageAsync(ChatMessage chatMessage);
     }
 }

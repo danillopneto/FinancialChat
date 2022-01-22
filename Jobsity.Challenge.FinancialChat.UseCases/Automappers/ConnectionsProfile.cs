@@ -14,6 +14,7 @@ namespace Jobsity.Challenge.FinancialChat.UseCases.Automappers
                                opt => opt.Ignore());
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<ChatRoom, ChatRoomDto>().ReverseMap();
+            CreateMap<ChatMessageDto, ChatMessage>().ReverseMap();
         }
     }
 }

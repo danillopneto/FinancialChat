@@ -25,7 +25,6 @@ namespace Jobsity.Challenge.FinancialChat.UseCases.UseCases
             {
                 ConnectionId = connectionId,
                 DtConnection = userDto.DtConnection,
-                Id = Guid.NewGuid(),
                 Name = userDto.Name
             };
 

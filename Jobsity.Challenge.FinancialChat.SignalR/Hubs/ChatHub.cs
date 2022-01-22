@@ -20,6 +20,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
         private readonly ILogger<ChatHub> _logger;
 
         private readonly ISaveUserUseCase _saveUserUseCase;
+        private readonly ISaveMessageIntoRoomUseCase _saveMessageIntoRoomUseCase;
 
         #endregion " FIELDS "
 
@@ -30,12 +31,14 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                        IGetRoomUseCase getRoomUseCase,
                        IGetUserUseCase getUserUseCase,
                        ISaveUserUseCase saveUserUseCase,
+                       ISaveMessageIntoRoomUseCase saveMessageIntoRoomUseCase,
                        ILogger<ChatHub> logger)
         {
             _addToRoomUseCase = addToRoomUseCase ?? throw new ArgumentNullException(nameof(addToRoomUseCase));
             _getRoomUseCase = getRoomUseCase ?? throw new ArgumentNullException(nameof(getRoomUseCase));
             _getUserUseCase = getUserUseCase ?? throw new ArgumentNullException(nameof(getUserUseCase));
             _saveUserUseCase = saveUserUseCase ?? throw new ArgumentNullException(nameof(saveUserUseCase));
+            _saveMessageIntoRoomUseCase = saveMessageIntoRoomUseCase ?? throw new ArgumentNullException(nameof(saveMessageIntoRoomUseCase));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -53,7 +56,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                 {
                     room = await _addToRoomUseCase.AddAsync(groupName, user.Id);
                     await AddAndNotifyNewUserRoom(user, room);
-                    await SendMessageToTheGroup(new ChatMessage(room.Id, $"{user.Name} has joined the group {groupName}."));
+                    await SendMessageToTheGroup(new ChatMessageDto(room.Id, $"{user.Name} has joined the group {groupName}."));
                 }
                 else
                 {
@@ -86,15 +89,16 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             }
         }
 
-        public async Task SendMessage(ChatMessage chat)
+        public async Task SendMessage(ChatMessageDto chatMessage)
         {
             try
             {
-                await SendMessageToTheGroup(chat);
+                await _saveMessageIntoRoomUseCase.SaveAsync(chatMessage);
+                await SendMessageToTheGroup(chatMessage);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error trying to send a message to the group {GroupName}.", chat?.Destination);
+                _logger.LogError(ex, "Error trying to send a message to the group {GroupName}.", chatMessage?.Destination);
             }
         }
 
@@ -117,7 +121,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             await Clients.All.SendAsync(ConstantsHubs.DefaultChat, await _getRoomUseCase.GetAll(), user);
         }
 
-        private async Task SendMessageToTheGroup(ChatMessage chat)
+        private async Task SendMessageToTheGroup(ChatMessageDto chat)
         {
             await Clients.Group(chat.Destination.ToString()).SendAsync("Receive", chat);
         }

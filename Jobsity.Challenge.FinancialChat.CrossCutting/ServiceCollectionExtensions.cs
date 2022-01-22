@@ -32,6 +32,7 @@ namespace Jobsity.Challenge.FinancialChat.CrossCutting
             services.AddScoped<IAddToRoomUseCase, AddToRoomUseCase>();
             services.AddScoped<IGetUserUseCase, GetUserUseCase>();
             services.AddScoped<IGetRoomUseCase, GetRoomUseCase>();
+            services.AddScoped<ISaveMessageIntoRoomUseCase, SaveMessageIntoRoomUseCase>();            
             services.AddScoped<ISaveUserUseCase, SaveUserUseCase>();
 
             return services;

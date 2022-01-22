@@ -34,17 +34,25 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
             return room;
         }
 
-        public async Task<IEnumerable<ChatRoom>> GetAllRooms() => await _chatContext.Rooms.AsNoTracking().Include(r => r.Users).ToListAsync();
+        public async Task<IEnumerable<ChatRoom>> GetAllRooms() => await _chatContext.Rooms.Include(m => m.Messages)
+                                                                                          .ThenInclude(s => s.Sender)
+                                                                                          .AsNoTracking()
+                                                                                          .Include(r => r.Users)
+                                                                                          .AsNoTracking()
+                                                                                          .ToListAsync();
 
         public async Task<ChatRoom> GetRoomById(Guid id)
         {
-            return await _chatContext.Rooms.FindAsync(id);
+            return await _chatContext.Rooms.Where(r => r.Id == id)
+                                           .Include(m => m.Messages)
+                                           .Include(u => u.Users)
+                                           .FirstOrDefaultAsync();
         }
 
         public async Task<ChatRoom> GetRoomByName(string roomName)
         {
-            return await _chatContext.Rooms.Include(r => r.Users)
-                                           .Where(r => r.Name == roomName)
+            return await _chatContext.Rooms.Where(r => r.Name == roomName)
+                                           .Include(r => r.Users)
                                            .AsNoTracking()
                                            .FirstOrDefaultAsync();
         }
@@ -73,6 +81,16 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
                 room.Users.Remove(user);
             }
 
+            await _chatContext.SaveChangesAsync();
+        }
+
+        public async Task SaveNewMessageAsync(ChatMessage chatMessage)
+        {
+            var room = await _chatContext.Rooms.Include(m => m.Messages)
+                                               .FirstOrDefaultAsync(x => x.Id == chatMessage.Destination);
+            room.Messages.Add(chatMessage);
+            _chatContext.Rooms.Update(room);
+            
             await _chatContext.SaveChangesAsync();
         }
     }

@@ -36,6 +36,7 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
             else
             {
                 currentUser.ConnectionId = user.ConnectionId;
+                _chatContext.Users.Update(currentUser);
             }
 
             await _chatContext.SaveChangesAsync();
