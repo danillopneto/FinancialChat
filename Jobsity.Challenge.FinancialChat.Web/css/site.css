@@ -1,0 +1,202 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    background-color: #4CAF50;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    width: 200px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.chats {
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    height: 100vh;
+}
+
+.rooms {
+    background: white;
+}
+
+button:hover {
+    background-color: #52a754;
+}
+
+body {
+    background: #14aaed;
+    background: -webkit-linear-gradient(to left, #14aaed, #6b4cfa);
+    background: linear-gradient(to left, #14aaed, #6b4cfa);
+}
+
+.main {
+    width: 80%;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container {
+    display: grid;
+    width: 80%;
+    height: 100vh;
+    grid-template-columns: 1fr 4fr;
+    margin: 0 auto;
+}
+
+header {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+}
+
+.userAvatar {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 20% 90%;
+    align-items: center;
+}
+
+.user {
+    position: relative;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 40px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    font-family: monospace;
+    text-overflow: ellipsis;
+    margin: 4px;
+    cursor: pointer;
+    transition: opacity 500ms ease;
+    text-align: center;
+}
+
+.user .user_icon {
+    font-size: 30px;
+    color: #ff6362;
+    text-transform: uppercase;
+}
+
+.user .user_name {
+    font-weight: 700;
+    font-size: 15px;
+    color: #5d5454;
+    text-transform: capitalize;
+}
+
+.user .user_date {
+    color: #606060;
+    font-size: small;
+}
+
+.user:hover {
+    opacity: .8;
+}
+
+.rooms>section {
+    padding: 30px;
+    cursor: pointer;
+}
+
+.rooms>section:hover {
+    background-color: #efefef;
+}
+
+
+/* Estilo para chat */
+
+.chats_wrapper {
+    white-space: nowrap;
+}
+
+.chats_wrapper .chat {
+    font-family: sans-serif;
+    margin: 0px 5px;
+    background-color: #fafafa;
+    border-radius: 5px 5px 0 0;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr 5fr 1fr;
+}
+
+.chats_wrapper .chat header {
+    background: #293239;
+    border-radius: 5px 5px 0 0;
+    color: #fff;
+    cursor: pointer;
+    padding: 16px 24px;
+}
+
+.chats_wrapper .chat main {
+    padding: 5px;
+    overflow-y: scroll;
+}
+
+.chats_wrapper .chat main .message {
+    width: fit-content;
+    word-break: break-word;
+    white-space: normal;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 5px 0px;
+    height: fit-content;
+    height: -moz-fit-content;
+    position: relative;
+}
+
+.chats_wrapper .chat main .message.their {
+    background-color: #add1ff;
+}
+
+.chats_wrapper .chat main .message.me {
+    background-color: #adffca;
+    justify-self: flex-end;
+    align-self: flex-end;
+}
+
+.chats_wrapper .chat main .me span,
+.chats_wrapper .chat main .their span {
+    font-size: 10px;
+    color: #606060;
+}
+
+.chats_wrapper .chat footer {
+    padding: 15px;
+}
+
+.chats_wrapper .chat footer input {
+    border: 1px solid #add1ff;
+    width: 90%;
+    font-size: 14px;
+    padding: 15px;
+    border-radius: 20px !important;
+    outline: none;
+}
+
+.chats_wrapper .chat footer a {
+    font-size: medium;
+    color: #2196F3;
+    padding: 5px;
+    cursor: pointer;
+}
+
+
+/* Estilos genéricos */
+
+.box_shadow_0 {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+}
