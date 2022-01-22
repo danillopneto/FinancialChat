@@ -10,11 +10,11 @@ namespace Jobsity.Challenge.FinancialChat.Interfaces.Repositories
 
         Task<ChatRoom> GetRoomById(Guid id);
 
-        Task<ChatRoom> GetRoomByName(string groupName);
+        Task<ChatRoom> GetRoomByName(string roomName);
 
-        Task<ChatRoom> GetRoomByNameAndUser(string groupName, Guid userId);
+        Task<ChatRoom> GetRoomByNameAndUser(string roomName, Guid userId);
 
-        Task<bool> HasUser(string groupName, User user);
+        Task<bool> HasUser(string roomName, User user);
 
         Task RemoveUser(string roomName, User user);
     }

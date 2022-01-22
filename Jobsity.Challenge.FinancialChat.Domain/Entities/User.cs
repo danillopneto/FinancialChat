@@ -1,6 +1,6 @@
 ﻿namespace Jobsity.Challenge.FinancialChat.Domain.Entities
 {
-    public record class User
+    public class User
     {
         public string ConnectionId { get; set; }
 

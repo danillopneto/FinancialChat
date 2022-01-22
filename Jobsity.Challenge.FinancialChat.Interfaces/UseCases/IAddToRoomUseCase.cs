@@ -4,6 +4,6 @@ namespace Jobsity.Challenge.FinancialChat.Interfaces.UseCases
 {
     public interface IAddToRoomUseCase
     {
-        Task<ChatRoomDto?> AddAsync(string roomName, UserDto userDto);
+        Task<ChatRoomDto?> AddAsync(string roomName, Guid userId);
     }
 }

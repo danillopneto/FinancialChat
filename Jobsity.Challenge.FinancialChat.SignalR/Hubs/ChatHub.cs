@@ -51,7 +51,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                 var room = await _getRoomUseCase.GetByNameAndUser(groupName, user.Id);
                 if (room == null)
                 {
-                    room = await _addToRoomUseCase.AddAsync(groupName, user);
+                    room = await _addToRoomUseCase.AddAsync(groupName, user.Id);
                     await AddAndNotifyNewUserRoom(user, room);
                     await SendMessageToTheGroup(new ChatMessage(room.Id, $"{user.Name} has joined the group {groupName}."));
                 }

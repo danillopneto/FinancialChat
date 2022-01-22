@@ -1,37 +1,44 @@
 ﻿using Jobsity.Challenge.FinancialChat.Domain.Entities;
+using Jobsity.Challenge.FinancialChat.Infra.Contexts;
 using Jobsity.Challenge.FinancialChat.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
 {
     public class UserConnectionRepository : IUserConnectionRepository
     {
-        private readonly List<User> _connections = new();
+        private readonly ChatContext _chatContext;
 
-        public async Task<List<User>> GetAllUser()
+        public UserConnectionRepository(ChatContext chatContext)
         {
-            return (from con in _connections
-                    select con
-            ).ToList();
+            _chatContext = chatContext ?? throw new ArgumentNullException(nameof(chatContext));
+        }
+
+        public async Task<List<User>> GetAllUser() => await _chatContext.Users.ToListAsync();
+
+        public async Task<User> GetUser(Guid id)
+        {
+            return await _chatContext.Users.FindAsync(id);
         }
 
         public async Task<User> GetUserByConnectionId(string connectionId)
         {
-            return (from con in _connections where con.ConnectionId == connectionId select con).FirstOrDefault();
+            return (from con in _chatContext.Users where con.ConnectionId == connectionId select con).AsNoTracking().FirstOrDefault();
         }
 
         public async Task Save(User user)
         {
-            var currentUser = _connections.FirstOrDefault(x => x.Name == user.Name);
+            var currentUser = await _chatContext.Users.Where(x => x.Name == user.Name).FirstOrDefaultAsync();
             if (currentUser is null)
             {
-                _connections.Add(user);
+                await _chatContext.Users.AddAsync(user);
             }
             else
             {
-                _connections.Remove(currentUser);
-                var newUser = currentUser with { ConnectionId = user.ConnectionId };
-                _connections.Add(newUser);
+                currentUser.ConnectionId = user.ConnectionId;
             }
+
+            await _chatContext.SaveChangesAsync();
         }
     }
 }

@@ -9,20 +9,22 @@ namespace Jobsity.Challenge.FinancialChat.UseCases.UseCases
     public class AddToRoomUseCase : IAddToRoomUseCase
     {
         private readonly IChatRoomRepository _chatRoomRepository;
-
+        private readonly IUserConnectionRepository _userConnectionRepository;
         private readonly IMapper _mapper;
 
         public AddToRoomUseCase(
                                 IChatRoomRepository chatRoomRepository,
+                                IUserConnectionRepository userConnectionRepository,
                                 IMapper mapper)
         {
             _chatRoomRepository = chatRoomRepository ?? throw new ArgumentNullException(nameof(chatRoomRepository));
+            _userConnectionRepository = userConnectionRepository ?? throw new ArgumentNullException(nameof(userConnectionRepository));
             _mapper = mapper;
         }
 
-        public async Task<ChatRoomDto?> AddAsync(string roomName, UserDto userDto)
+        public async Task<ChatRoomDto?> AddAsync(string roomName, Guid userId)
         {
-            var user = _mapper.Map<User>(userDto);
+            var user = await _userConnectionRepository.GetUser(userId);
             if (!await _chatRoomRepository.HasUser(roomName, user))
             {
                 var room = await _chatRoomRepository.AddUser(roomName, user);

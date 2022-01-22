@@ -6,6 +6,8 @@ namespace Jobsity.Challenge.FinancialChat.Interfaces.Repositories
     {
         Task<List<User>> GetAllUser();
 
+        Task<User> GetUser(Guid id);
+
         Task<User> GetUserByConnectionId(string connectionId);
 
         Task Save(User user);

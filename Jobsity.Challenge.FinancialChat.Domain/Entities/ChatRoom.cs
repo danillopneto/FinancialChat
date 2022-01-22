@@ -2,6 +2,10 @@
 {
     public class ChatRoom
     {
+        public ChatRoom()
+        {
+        }
+
         public ChatRoom(string name, User user)
         {
             Id = Guid.NewGuid();

@@ -1,17 +1,28 @@
-﻿using Jobsity.Challenge.FinancialChat.Infra.Repositories;
+﻿using Jobsity.Challenge.FinancialChat.Infra.Contexts;
+using Jobsity.Challenge.FinancialChat.Infra.Repositories;
 using Jobsity.Challenge.FinancialChat.Interfaces.Repositories;
 using Jobsity.Challenge.FinancialChat.Interfaces.UseCases;
 using Jobsity.Challenge.FinancialChat.UseCases.UseCases;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jobsity.Challenge.FinancialChat.CrossCutting
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddDatabaseConfiguration(this IServiceCollection services)
+        {
+            services.AddDbContext<ChatContext>(opt => opt.UseInMemoryDatabase("FinancialChat"));
+
+            services.AddScoped<ChatContext>();
+
+            return services;
+        }
+
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddSingleton<IChatRoomRepository, ChatRoomRepository>();
-            services.AddSingleton<IUserConnectionRepository, UserConnectionRepository>();
+            services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
+            services.AddScoped<IUserConnectionRepository, UserConnectionRepository>();
 
             return services;
         }

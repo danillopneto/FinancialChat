@@ -26,7 +26,11 @@ builder.Services.AddServices();
 // Add repositories to the container.
 builder.Services.AddRepositories();
 
+// Add Automapper config
 builder.Services.AddAutoMapper(typeof(ConnectionsProfile));
+
+// Add DataBaseConfiguration
+builder.Services.AddDatabaseConfiguration();
 
 var app = builder.Build();
 

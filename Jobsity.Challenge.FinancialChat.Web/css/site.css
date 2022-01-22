@@ -61,20 +61,16 @@ header {
 
 .userAvatar {
     padding: 10px;
-    display: grid;
-    grid-template-columns: 20% 90%;
-    align-items: center;
 }
 
 .user {
-    position: relative;
+    /* position: relative; */
     background-color: #fafafa;
     padding: 10px;
     border-radius: 40px;
     width: 60px;
     height: 60px;
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
     font-family: monospace;

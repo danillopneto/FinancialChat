@@ -59,7 +59,7 @@ async function startConnection(chat) {
             await startConnection(chat);
         });
 
-        chat.onReceiveMessage();
+        window.chat.onReceiveMessage();
 
         $('.userAvatar').html(`
             <section class="user box_shadow_0">
@@ -70,7 +70,7 @@ async function startConnection(chat) {
 
     } catch (err) {
         console.log(err);
-        setTimeout(() => startConnection(chat.connection), 5000);
+        setTimeout(() => startConnection(chat), 5000);
     }
 };
 
