@@ -35,6 +35,11 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
             return _rooms.FirstOrDefault(r => r.Name == groupName);
         }
 
+        public async Task<ChatRoom> GetRoomByNameAndUser(string groupName, Guid userId)
+        {
+            return _rooms.FirstOrDefault(r => r.Name == groupName && r.Users.Any(u => u.Id == userId));
+        }
+
         public async Task<bool> HasUser(string groupName, User user)
         {
             var room = await GetRoomByName(groupName);

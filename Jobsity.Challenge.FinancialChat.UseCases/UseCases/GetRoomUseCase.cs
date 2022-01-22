@@ -8,6 +8,7 @@ namespace Jobsity.Challenge.FinancialChat.UseCases.UseCases
     public class GetRoomUseCase : IGetRoomUseCase
     {
         private readonly IChatRoomRepository _chatRoomRepository;
+
         private readonly IMapper _mapper;
 
         public GetRoomUseCase(
@@ -22,6 +23,12 @@ namespace Jobsity.Challenge.FinancialChat.UseCases.UseCases
         {
             var rooms = await _chatRoomRepository.GetAllRooms();
             return _mapper.Map<IEnumerable<ChatRoomDto>>(rooms);
+        }
+
+        public async Task<ChatRoomDto> GetByNameAndUser(string groupName, Guid userId)
+        {
+            var rooms = await _chatRoomRepository.GetRoomByNameAndUser(groupName, userId);
+            return _mapper.Map<ChatRoomDto>(rooms);
         }
     }
 }

@@ -12,7 +12,9 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
         #region " FIELDS "
 
         private readonly IAddToRoomUseCase _addToRoomUseCase;
+
         private readonly IGetRoomUseCase _getRoomUseCase;
+
         private readonly IGetUserUseCase _getUserUseCase;
 
         private readonly ILogger<ChatHub> _logger;
@@ -46,11 +48,16 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             try
             {
                 var user = await _getUserUseCase.GetUserByConnectionId(Context.ConnectionId);
-                var room = await _addToRoomUseCase.AddAsync(groupName, user);
-                if (room is not null)
+                var room = await _getRoomUseCase.GetByNameAndUser(groupName, user.Id);
+                if (room == null)
                 {
-                    await Groups.AddToGroupAsync(Context.ConnectionId, room.Id.ToString());
-                    await NotifyChatRoomOfNewUser(groupName, user, room);
+                    room = await _addToRoomUseCase.AddAsync(groupName, user);
+                    await AddAndNotifyNewUserRoom(user, room);
+                    await SendMessageToTheGroup(new ChatMessage(room.Id, $"{user.Name} has joined the group {groupName}."));
+                }
+                else
+                {
+                    await AddAndNotifyNewUserRoom(user, room);
                 }
             }
             catch (Exception ex)
@@ -79,22 +86,6 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             }
         }
 
-        /*public async Task RemoveFromChatRoom(string groupName)
-        {
-            try
-            {
-                var user = _connections.GetUserByConnectionId(Context.ConnectionId);
-                _rooms.RemoveUser(groupName, user);
-                var room = _rooms.GetRoomByName(groupName);
-
-                await NotifyChatRoomOfLeftUser(groupName, user, room);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error trying to remove the user to the group {GroupName}.", groupName);
-            }
-        }*/
-
         public async Task SendMessage(ChatMessage chat)
         {
             try
@@ -120,17 +111,10 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             }
         }
 
-        private async Task NotifyChatRoomOfLeftUser(string groupName, UserDto user, ChatRoomDto room)
+        private async Task AddAndNotifyNewUserRoom(UserDto user, ChatRoomDto room)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, room.Id.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, room.Id.ToString());
             await Clients.All.SendAsync(ConstantsHubs.DefaultChat, await _getRoomUseCase.GetAll(), user);
-            await SendMessageToTheGroup(new ChatMessage(room.Id, $"{user.Name} has left the group {groupName}."));
-        }
-
-        private async Task NotifyChatRoomOfNewUser(string groupName, UserDto user, ChatRoomDto room)
-        {
-            await Clients.All.SendAsync(ConstantsHubs.DefaultChat, await _getRoomUseCase.GetAll(), user);
-            await SendMessageToTheGroup(new ChatMessage(room.Id, $"{user.Name} has joined the group {groupName}."));
         }
 
         private async Task SendMessageToTheGroup(ChatMessage chat)
