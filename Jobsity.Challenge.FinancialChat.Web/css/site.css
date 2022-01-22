@@ -152,20 +152,33 @@ header {
     white-space: normal;
     padding: 10px;
     border-radius: 20px;
-    margin: 5px 0px;
+    margin: 5px 0;
     height: fit-content;
     height: -moz-fit-content;
     position: relative;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.chats_wrapper .chat main .message b {
+    font-size: 12px;
+    color: #293239;
 }
 
 .chats_wrapper .chat main .message.their {
     background-color: #add1ff;
 }
 
+.chats_wrapper .chat main .message.room {
+    background-color: #a0ffac;
+    margin: 5px auto;
+}
+
 .chats_wrapper .chat main .message.me {
     background-color: #adffca;
     justify-self: flex-end;
     align-self: flex-end;
+    margin: 5px 0;
 }
 
 .chats_wrapper .chat main .me span,

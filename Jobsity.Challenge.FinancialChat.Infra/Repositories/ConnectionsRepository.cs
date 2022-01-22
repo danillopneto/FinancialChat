@@ -4,31 +4,32 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
 {
     public class ConnectionsRepository
     {
-        private readonly Dictionary<string, User> connections = new();
+        private readonly List<User> connections = new();
 
-        public void Add(string uniqueID, User user)
+        public void Save(User user, string connectionId)
         {
-            if (!connections.ContainsKey(uniqueID))
-                connections.Add(uniqueID, user);
+            var currentUser = connections.FirstOrDefault(x => x.Name == user.Name);
+            if (currentUser is null)
+            {
+                user.Id = Guid.NewGuid();
+                connections.Add(user);
+            }
+            else
+            {
+                currentUser.SetConnection(connectionId);
+            }
         }
 
         public List<User> GetAllUser()
         {
             return (from con in connections
-                    select con.Value
+                    select con
             ).ToList();
         }
 
-        public User GetUser(string connectionId)
+        public User GetUserByConnectionId(string connectionId)
         {
-            return (from con in connections where con.Key == connectionId select con.Value).FirstOrDefault();
-        }
-
-        public string GetUserId(long id)
-        {
-            return (from con in connections
-                    where con.Value.Key == id
-                    select con.Key).FirstOrDefault();
+            return (from con in connections where con.ConnectionId == connectionId select con).FirstOrDefault();
         }
     }
 }

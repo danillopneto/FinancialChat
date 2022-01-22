@@ -2,10 +2,17 @@
 {
     public class User
     {
+        public DateTime DtConnection { get; set; }
+
+        public Guid Id { get; set; }
+
         public string Name { get; set; }
 
-        public long Key { get; set; }
+        public string ConnectionId { get; private set; }
 
-        public DateTime DtConnection { get; set; }
+        public void SetConnection(string connectionId)
+        {
+            ConnectionId = connectionId;
+        }
     }
 }

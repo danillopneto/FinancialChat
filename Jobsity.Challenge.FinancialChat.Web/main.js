@@ -1,11 +1,10 @@
-$(document).ready(function() {
+$(document).ready(function () {
     window.chat = createChatController();
     window.chat.loadUser();
 });
 
 function createChatController() {
     var user = {
-        key: null,
         name: null,
         dtConnection: null
     }
@@ -13,16 +12,15 @@ function createChatController() {
     return {
         state: user,
         connection: null,
-        loadUser: function() {
+        loadUser: function () {
             this.state.name = prompt('Type your name to enter the chat', 'Username');
-            this.state.key = new Date().valueOf();
             this.state.dtConnection = new Date();
             this.connectUserToChat();
         },
-        connectUserToChat: function() {
+        connectUserToChat: function () {
             startConnection(this);
         },
-        sendMessage: function(to) {
+        sendMessage: function (to) {
             var chatMessage = {
                 sender: this.state,
                 message: to.message,
@@ -32,13 +30,12 @@ function createChatController() {
             this.connection.invoke("SendMessage", (chatMessage))
                 .catch(err => console.log(x = err));
 
-            insertMessage(chatMessage.destination, 'me', chatMessage.message);
             to.field.val('').focus();
         },
 
-        onReceiveMessage: function() {
-            this.connection.on("Receive", (sender, message) => {
-                openChat(null, sender, message);
+        onReceiveMessage: function () {
+            this.connection.on("Receive", (chatData) => {
+                insertMessage(chatData);
             });
         }
     };
@@ -52,9 +49,13 @@ async function startConnection(chat) {
 
         $('#addNewGroup').show();
 
-        loadChat(chat.connection);
+        chat.connection.on('userData', (user) => {
+            window.chat.state.id = user.id;
+        });
+    
+        loadRooms(chat.connection);
 
-        chat.connection.onclose(async() => {
+        chat.connection.onclose(async () => {
             await startConnection(chat);
         });
 
@@ -68,6 +69,7 @@ async function startConnection(chat) {
         `);
 
     } catch (err) {
+        console.log(err);
         setTimeout(() => startConnection(chat.connection), 5000);
     }
 };
@@ -78,65 +80,75 @@ async function createChatRoom() {
         chatRoomName = prompt('Type the name of the chatroom', '');
     }
 
-    chat.connection.invoke("AddToGroup", (chatRoomName))
-        .catch(err => console.log(x = err));
-
+    addToChatRoom(chatRoomName);
 }
 
-async function loadChat(connection) {
+async function addToChatRoom(chatRoomName) {
+    chat.connection.invoke("AddToGroup", (chatRoomName))
+        .catch(err => console.log(x = err));
+}
 
+async function loadRooms(connection) {
     connection.on('chat', (rooms, user) => {
-        const listRooms = (data) => {
-            return rooms.map((r) => {
-                if (!checkIfElementExist(r.id, 'id'))
-                    return (
-                        `
-                  <section class="room box_shadow_0" onclick="openChat(this)" data-id="${r.id}" data-name="${r.name}">
-                  <p class="room_name"> ${r.name}</p>
-                  <p>(${r.users.length} active users)</p>
-                  </section>
-                  `)
-            }).join('')
-        }
+        rooms.forEach((room) => {
+            if (!checkIfElementExist(room.id, 'id')) {
+                let sectionRoom = `
+                    <section class="room box_shadow_0" onclick="openChat(this)" data-id="${room.id}" data-name="${room.name}">
+                    <p class="room_name"> ${room.name}</p>
+                    <p class="room_count">(${room.users.length} active users)</p>
+                    </section>
+                `;
 
-        $('.chats > .rooms').append(listRooms);
+                $('.chats > .rooms').append(sectionRoom);
+
+                let containerChats = $('.chats_wrapper');
+                containerChats.find('.roomChat').hide();
+                if (!checkIfElementExist(room.id, 'chat')) {
+                    const chat =
+                        `
+                    <section class="chat" data-chat="${room.id}" data-chat-name="${room.name}">
+                    <header>
+                        ${room.name}
+                    </header>
+                    <main>
+                    </main>
+                    <footer>
+                        <input type="text" placeholder="Type here your message" data-chat="${room.id}">
+                        <a onclick="sendMessage(this)" data-chat="${room.id}">Send</a>
+                    </footer>
+                    </section>
+                    `
+        
+                    containerChats.append(`<div data-id="${room.id}" class="roomChat">${chat}</div>`);
+                }
+            } else {
+                $(`section.room[data-id="${room.id}"] .room_count`).html(`(${room.users.length} active users)`);
+            }
+        });        
     });
 }
 
-function openChat(e, sender, message) {
-
-    var user = {
-        id: e ? $(e).data('id') : sender.key,
-        name: e ? $(e).data('name') : sender.name
+function openChat(e) {
+    var room = {
+        id:  $(e).data('id'),
+        name: $(e).data('name')
     }
 
-    if (!checkIfElementExist(user.id, 'chat')) {
-        const chat =
-            `
-        <section class="chat" data-chat="${user.id}">
-        <header>
-            ${user.name}
-        </header>
-        <main>
-        </main>
-        <footer>
-            <input type="text" placeholder="Type here your message" data-chat="${user.id}">
-            <a onclick="sendMessage(this)" data-chat="${user.id}">Send</a>
-        </footer>
-        </section>
-        `
-
-        $('.chats_wrapper').html(chat);
-    }
-    if (sender && message)
-        insertMessage(sender.key, 'their', message);
+    let chatsContainer = $('.chats_wrapper');
+    chatsContainer.find('> div').hide();
+    chatsContainer.find(`[data-id="${room.id}"]`).show();
 }
 
-function insertMessage(target, who, message) {
+function insertMessage(chatData) {
+    var sender = chatData.sender != null ? chatData.sender.name == window.chat.state.name ? 'me' : 'their' : 'room';
     const chatMessage = `
-    <div class="message ${who}">${message} <span>${new Date().toLocaleTimeString()}</span></div>
+    <div class="message ${sender}">
+        ${sender != 'room' ? `<b>${chatData.sender.name}</b>` : ''}
+        <label>${chatData.message}<label>
+        <span>${new Date().toLocaleTimeString()}</span>
+    </div>
     `;
-    $(`section[data-chat="${target}"]`).find('main').append(chatMessage);
+    $(`section[data-chat="${chatData.destination}"]`).find('main').append(chatMessage);
 }
 
 function sendMessage(e) {
