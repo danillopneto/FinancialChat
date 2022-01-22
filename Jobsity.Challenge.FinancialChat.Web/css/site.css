@@ -116,8 +116,12 @@ header {
     background-color: #efefef;
 }
 
-
-/* Estilo para chat */
+.room.new_notification:before {
+    content: '◉';
+    color: green;
+    position: absolute;
+    margin: -15px;
+}
 
 .chats_wrapper {
     white-space: nowrap;

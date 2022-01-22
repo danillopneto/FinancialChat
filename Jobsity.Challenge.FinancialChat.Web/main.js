@@ -47,7 +47,7 @@ async function startConnection(chat) {
         chat.connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/chat?user=" + JSON.stringify(window.chat.state)).build();
         await chat.connection.start();
 
-        $('#addNewGroup').show();
+        $('.info_chat').show();
 
         chat.connection.on('userData', (user) => {
             window.chat.state = user;
@@ -138,6 +138,7 @@ function openChat(e) {
     chatsContainer.find('> div').hide();
     addToChatRoom(room.name);
     chatsContainer.find(`[data-id="${room.id}"]`).show();
+    $('.rooms .room').removeClass('new_notification');
 }
 
 function insertMessage(chatData) {
@@ -149,7 +150,12 @@ function insertMessage(chatData) {
         <span>${new Date().toLocaleTimeString()}</span>
     </div>
     `;
-    $(`section[data-chat="${chatData.destination}"]`).find('main').append(chatMessage);
+
+    var chatContainer = $(`section[data-chat="${chatData.destination}"]`);
+    chatContainer.find('main').append(chatMessage);
+    if (!chatContainer.is(':visible')) {
+        $(`.rooms .room[data-id="${chatData.destination}"]`).addClass('new_notification');
+    }
 }
 
 function sendMessage(e) {
