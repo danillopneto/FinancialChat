@@ -1,8 +1,6 @@
-﻿using CsvHelper.Configuration.Attributes;
-
-namespace Jobsity.Challenge.FinancialChat.Bot.Converters
+﻿namespace Jobsity.Challenge.FinancialChat.Bot.Domain.DataContracts.Responses
 {
-    public class StockPrice
+    public class StockPriceResponse
     {
         public string Symbol { get; set; }
 

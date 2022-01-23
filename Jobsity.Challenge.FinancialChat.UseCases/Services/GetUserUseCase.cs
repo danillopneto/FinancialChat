@@ -24,5 +24,11 @@ namespace Jobsity.Challenge.FinancialChat.UseCases.Services
             var user = await _userConnectionRepository.GetUserByConnectionId(connectionId);
             return _mapper.Map<UserDto>(user);
         }
+
+        public async Task<UserDto> GetUserById(Guid id)
+        {
+            var user = await _userConnectionRepository.GetUser(id);
+            return _mapper.Map<UserDto>(user);
+        }
     }
 }

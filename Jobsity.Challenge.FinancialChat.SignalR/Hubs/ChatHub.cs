@@ -135,7 +135,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             if (_dataAppSettings.AllowedCommands.Any(c => chatMessage.Message.StartsWith(c)))
             {
                 await _dispatchCommandUseCase.DispatchAsync(chatMessage);
-                message = $"Processing command {chatMessage.Message}...";
+                message = $"Processing command {chatMessage.Message}";
             }
             else
             {

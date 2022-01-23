@@ -1,6 +1,6 @@
 using Jobsity.Challenge.FinancialChat.Bot.Interfaces.UseCases;
-using Jobsity.Challenge.FinancialChat.Bot.Models;
 using Microsoft.AspNetCore.Mvc;
+using Jobsity.Challenge.FinancialChat.Bot.Domain.Dtos;
 
 namespace Jobsity.Challenge.FinancialChat.Bot.Controllers
 {
@@ -8,10 +8,15 @@ namespace Jobsity.Challenge.FinancialChat.Bot.Controllers
     [Route("[controller]")]
     public class CommandsController : ControllerBase
     {
+        #region " FIELDS "
+
         private readonly IFilterCommandUseCase _filterCommandUseCase;
-        private readonly IProcessCommandUseCase _processCommandUseCase;
 
         private readonly ILogger<CommandsController> _logger;
+
+        private readonly IProcessCommandUseCase _processCommandUseCase;
+
+        #endregion " FIELDS "
 
         public CommandsController(
                                   IFilterCommandUseCase filterCommandUseCase,
@@ -28,7 +33,7 @@ namespace Jobsity.Challenge.FinancialChat.Bot.Controllers
         {
             try
             {
-                var (allowedCommand, commandParameter) = _filterCommandUseCase.Filter(command.Command);
+                var (allowedCommand, commandParameter) = _filterCommandUseCase.Filter(command.Message);
                 if (allowedCommand is not null)
                 {
                     command.CommandParameter = commandParameter;
@@ -37,7 +42,7 @@ namespace Jobsity.Challenge.FinancialChat.Bot.Controllers
                 }
                 else
                 {
-                    return BadRequest($"The command {command.Command} is not allowed.");
+                    return BadRequest($"The command {command.Message} is not allowed.");
                 }
             }
             catch (Exception ex)

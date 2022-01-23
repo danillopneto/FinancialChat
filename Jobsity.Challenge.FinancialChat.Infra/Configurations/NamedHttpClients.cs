@@ -2,6 +2,6 @@
 {
     public static class NamedHttpClients
     {
-        public static readonly string BotApi = "BotApi";
+        public const string BotApi = "BotApi";
     }
 }

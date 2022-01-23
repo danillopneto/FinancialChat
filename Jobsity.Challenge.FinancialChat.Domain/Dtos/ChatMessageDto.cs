@@ -14,6 +14,12 @@
             Timestamp = DateTime.Now;
         }
 
+        public ChatMessageDto(Guid destination, string message, UserDto sender)
+            : this(destination, message)
+        {
+            Sender = sender;
+        }
+
         public Guid Destination { get; set; }
 
         public string Message { get; set; }
