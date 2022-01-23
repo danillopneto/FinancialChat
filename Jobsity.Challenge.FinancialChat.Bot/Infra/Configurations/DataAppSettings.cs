@@ -1,4 +1,4 @@
-﻿namespace Jobsity.Challenge.FinancialChat.Bot.Configurations
+﻿namespace Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations
 {
     public class DataAppSettings
     {

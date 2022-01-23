@@ -1,4 +1,5 @@
-﻿using Jobsity.Challenge.FinancialChat.Infra.Configurations;
+﻿using Jobsity.Challenge.FinancialChat.Core.Utils;
+using Jobsity.Challenge.FinancialChat.Infra.Configurations;
 using Jobsity.Challenge.FinancialChat.Infra.Contexts;
 using Jobsity.Challenge.FinancialChat.Infra.Gateways;
 using Jobsity.Challenge.FinancialChat.Infra.Repositories;
@@ -44,7 +45,7 @@ namespace Jobsity.Challenge.FinancialChat.CrossCutting
                         client.DefaultRequestHeaders.Accept.Clear();
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     })
-                .AddTransientHttpErrorPolicy(PollyConfiguration());
+                .AddTransientHttpErrorPolicy(HttpUtils.PollyConfiguration());
 
             return services;
         }
@@ -67,16 +68,6 @@ namespace Jobsity.Challenge.FinancialChat.CrossCutting
             services.AddScoped<ISaveUserUseCase, SaveUserUseCase>();
 
             return services;
-        }
-
-        public static Func<PolicyBuilder<HttpResponseMessage>, IAsyncPolicy<HttpResponseMessage>> PollyConfiguration()
-        {
-            return builder => builder.WaitAndRetryAsync(new[]
-            {
-                TimeSpan.FromSeconds(1),
-                TimeSpan.FromSeconds(5),
-                TimeSpan.FromSeconds(10)
-            });
         }
     }
 }

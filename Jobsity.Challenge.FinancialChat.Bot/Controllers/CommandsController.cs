@@ -1,4 +1,3 @@
-using Jobsity.Challenge.FinancialChat.Bot.Configurations;
 using Jobsity.Challenge.FinancialChat.Bot.Interfaces.UseCases;
 using Jobsity.Challenge.FinancialChat.Bot.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +8,17 @@ namespace Jobsity.Challenge.FinancialChat.Bot.Controllers
     [Route("[controller]")]
     public class CommandsController : ControllerBase
     {
-        private readonly DataAppSettings _dataAppSettings;
-
+        private readonly IFilterCommandUseCase _filterCommandUseCase;
         private readonly IProcessCommandUseCase _processCommandUseCase;
 
         private readonly ILogger<CommandsController> _logger;
 
         public CommandsController(
+                                  IFilterCommandUseCase filterCommandUseCase,
                                   IProcessCommandUseCase processCommandUseCase,
                                   ILogger<CommandsController> logger)
         {
+            _filterCommandUseCase = filterCommandUseCase ?? throw new ArgumentNullException(nameof(filterCommandUseCase));
             _processCommandUseCase = processCommandUseCase ?? throw new ArgumentNullException(nameof(processCommandUseCase));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -28,8 +28,17 @@ namespace Jobsity.Challenge.FinancialChat.Bot.Controllers
         {
             try
             {
-                _processCommandUseCase.ProcessAsync(command, cancellationToken);
-                return Ok();
+                var (allowedCommand, commandParameter) = _filterCommandUseCase.Filter(command.Command);
+                if (allowedCommand is not null)
+                {
+                    command.CommandParameter = commandParameter;
+                    _processCommandUseCase.ProcessAsync(command, allowedCommand, cancellationToken);
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest($"The command {command.Command} is not allowed.");
+                }
             }
             catch (Exception ex)
             {

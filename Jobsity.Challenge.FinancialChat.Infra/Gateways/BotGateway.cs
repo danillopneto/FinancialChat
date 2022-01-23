@@ -8,8 +8,6 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Gateways
 {
     public class BotGateway : BaseGateway<BotGateway>, IBotGateway
     {
-        protected override string BaseClient => NamedHttpClients.BotApi;
-
         public BotGateway(
                           IHttpClientFactory httpClientFactory,
                           ILogger<BotGateway> logger)
@@ -20,7 +18,7 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Gateways
 
         public async Task PublishCommandAsync(CommandRequest command)
         {
-            await SendPostRequest(Client, command);
+            await SendPostRequest(NamedHttpClients.BotApi, Client, command);
         }
     }
 }

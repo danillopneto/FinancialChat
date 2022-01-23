@@ -7,10 +7,6 @@ namespace Jobsity.Challenge.FinancialChat.Core.Infra.Gateways
 {
     public abstract class BaseGateway<T>
     {
-        private readonly ILogger<T> _logger;
-
-        protected abstract string BaseClient { get; }
-
         protected virtual string Client { get; set; }
 
         protected IHttpClientFactory HttpClientFactory { get; }
@@ -27,39 +23,72 @@ namespace Jobsity.Challenge.FinancialChat.Core.Infra.Gateways
             }
         }
 
+        protected ILogger<T> Logger { get; }
+
         protected BaseGateway(
                               IHttpClientFactory httpClientFactory,
                               ILogger<T> logger)
         {
             HttpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task SendPostRequest<TRequest>(
-                                                    string url,
-                                                    TRequest body)
+        public virtual async Task<TResponse> SendGetRequest<TResponse>(
+                                                                       string clientName,
+                                                                       string url,
+                                                                       CancellationToken cancellationToken = default)
         {
             var responseContent = string.Empty;
 
             try
             {
-                using var client = GetClient();
+                using var client = GetClient(clientName);
+
+                var clientResponse = await client.GetAsync(url, cancellationToken);
+                responseContent = await clientResponse.Content.ReadAsStringAsync(cancellationToken);
+
+                if (typeof(TResponse).IsValueType)
+                {
+                    return JsonConvert.DeserializeObject<TResponse>(responseContent, JsonSettings);
+                }
+
+                return (TResponse)(object)responseContent;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error trying to reach {Url}: {ResponseContent}", url, responseContent);
+                throw;
+            }
+        }
+
+        public virtual async Task SendPostRequest<TRequest>(
+                                                            string clientName,
+                                                            string url,
+                                                            TRequest body,
+                                                            CancellationToken cancellationToken = default)
+        {
+            var responseContent = string.Empty;
+
+            try
+            {
+                using var client = GetClient(clientName);
                 var json = JsonConvert.SerializeObject(body, JsonSettings);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var clientResponse = await client.PostAsync(url, content);
+                var clientResponse = await client.PostAsync(url, content, cancellationToken);
                 responseContent = await clientResponse.Content.ReadAsStringAsync();
                 clientResponse.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error trying to reach {Url}: {ResponseContent}", url, responseContent);
+                Logger.LogError(ex, "Error trying to reach {Url}: {ResponseContent}", url, responseContent);
+                throw;
             }
         }
 
-        protected HttpClient GetClient()
+        protected virtual HttpClient GetClient(string name)
         {
-            return HttpClientFactory.CreateClient(BaseClient);
+            return HttpClientFactory.CreateClient(name);
         }
     }
 }

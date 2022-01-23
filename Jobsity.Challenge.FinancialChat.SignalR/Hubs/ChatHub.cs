@@ -104,18 +104,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             {
                 if (chatMessage.IsCommand())
                 {
-                    var message = string.Empty;
-                    if (_dataAppSettings.AllowedCommands.Any(c => chatMessage.Message.StartsWith(c)))
-                    {
-                        await _dispatchCommandUseCase.DispatchAsync(chatMessage);
-                        message = $"Processing command {chatMessage.Message}...";
-                    }
-                    else
-                    {
-                        message = $"Invalid command {chatMessage.Message}";
-                    }
-
-                    await Clients.Client(Context.ConnectionId).SendAsync(ConstantsHubs.CommandReceived, new ChatMessageDto(chatMessage.Destination, message));
+                    await HandleCommand(chatMessage);
                 }
                 else
                 {
@@ -126,6 +115,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error trying to send a message to the group {GroupName}.", chatMessage?.Destination);
+                await Clients.Caller.SendAsync(ConstantsHubs.Receive, new ChatMessageDto(chatMessage.Destination, "Error while sending message/command."));
             }
         }
 
@@ -137,6 +127,22 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, room.Id.ToString());
             await Clients.All.SendAsync(ConstantsHubs.DefaultChat, await _getRoomUseCase.GetAll(), user);
+        }
+
+        private async Task HandleCommand(ChatMessageDto chatMessage)
+        {
+            var message = string.Empty;
+            if (_dataAppSettings.AllowedCommands.Any(c => chatMessage.Message.StartsWith(c)))
+            {
+                await _dispatchCommandUseCase.DispatchAsync(chatMessage);
+                message = $"Processing command {chatMessage.Message}...";
+            }
+            else
+            {
+                message = $"Invalid command {chatMessage.Message}";
+            }
+
+            await Clients.Client(Context.ConnectionId).SendAsync(ConstantsHubs.CommandReceived, new ChatMessageDto(chatMessage.Destination, message));
         }
 
         private async Task InsertCurrentUserIntoAvailableRooms()
