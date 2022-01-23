@@ -5,7 +5,7 @@
     $(document).on('keypress', '.message_input', function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
-            $('.send_button').click();
+            $(`[data-chat="${$(event.target).data('chat')}"] + .send_button`).click();
         }
     });
 });
@@ -114,7 +114,6 @@ async function loadRooms(connection) {
                 $('.chats > .rooms').append(sectionRoom);
 
                 let containerChats = $('.chats_wrapper');
-                containerChats.find('.roomChat').hide();
                 if (!checkIfElementExist(room.id, 'chat')) {
                     const chat =
                         `
@@ -131,7 +130,7 @@ async function loadRooms(connection) {
                     </section>
                     `
 
-                    containerChats.append(`<div data-id="${room.id}" class="roomChat">${chat}</div>`);
+                    containerChats.append(`<div data-id="${room.id}" class="roomChat" style="display:none;">${chat}</div>`);
                     room.messages.forEach((m) => {
                         insertMessage(m);
                     });
@@ -153,7 +152,8 @@ function openChat(e) {
     chatsContainer.find('> div').hide();
     addToChatRoom(room.name);
     chatsContainer.find(`[data-id="${room.id}"]`).show();
-    $('.rooms .room').removeClass('new_notification');
+    $(`.rooms .room[data-id=${room.id}]`).removeClass('new_notification');
+    goToLastMessage(room.id);
 }
 
 function insertMessage(chatData) {
@@ -171,10 +171,14 @@ function insertMessage(chatData) {
     if (!chatContainer.is(':visible')) {
         $(`.rooms .room[data-id="${chatData.destination}"]`).addClass('new_notification');
     } else {
-        var lastMessage = $('.chat main .message').last();
-        if (lastMessage.length) {
-            lastMessage[0].scrollIntoView();
-        }
+        goToLastMessage(chatData.destination);
+    }
+}
+
+function goToLastMessage(chatId) {
+    var lastMessage = $(`[data-id="${chatId}"] .chat main .message`).last();
+    if (lastMessage.length) {
+        lastMessage[0].scrollIntoView();
     }
 }
 

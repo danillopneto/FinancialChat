@@ -19,12 +19,21 @@ button {
 
 .chats {
     display: grid;
-    grid-template-rows: 1fr 3fr;
+    grid-template-rows: 125px 3fr;
     height: 100vh;
 }
 
 .rooms {
     background: white;
+    overflow-y: scroll;
+}
+
+.info_chat .chats_wrapper .chat main .message {
+    display: none;
+}
+
+.info_chat .chats_wrapper .chat main .message:nth-last-child(-n+50) {
+    display: grid;
 }
 
 button:hover {
@@ -47,7 +56,7 @@ body {
 
 .container {
     display: grid;
-    width: 80%;
+    width: 85%;
     height: 100vh;
     grid-template-columns: 1fr 4fr;
     margin: 0 auto;
@@ -129,7 +138,7 @@ header {
     border-radius: 5px 5px 0 0;
     height: 100vh;
     display: grid;
-    grid-template-rows: 1fr 5fr 1fr;
+    grid-template-rows: 70px 5fr 1fr;
 }
 
 .chats_wrapper .chat header {
@@ -192,11 +201,14 @@ header {
 
 .chats_wrapper .chat footer {
     padding: 15px;
+    display: grid;
+    grid-template-columns: 4fr 80px;
+    align-items: center;
+    text-align: center;
 }
 
 .chats_wrapper .chat footer input {
     border: 1px solid #add1ff;
-    width: 90%;
     font-size: 14px;
     padding: 15px;
     border-radius: 20px !important;
