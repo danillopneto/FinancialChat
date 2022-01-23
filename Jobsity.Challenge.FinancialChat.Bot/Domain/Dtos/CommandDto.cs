@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Jobsity.Challenge.FinancialChat.Bot.Domain.Dtos
+﻿namespace Jobsity.Challenge.FinancialChat.Bot.Domain.Dtos
 {
     public class CommandDto
     {

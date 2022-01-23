@@ -11,5 +11,7 @@
         public string Name { get; set; }
 
         public string QueryString { get; set; }
+
+        public MessageBrokerSettings MessageBroker { get; set; }
     }
 }

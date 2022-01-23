@@ -3,6 +3,7 @@ using Jobsity.Challenge.FinancialChat.Bot.Domain.Dtos;
 using Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations;
 using Jobsity.Challenge.FinancialChat.Bot.Interfaces.Domain;
 using Jobsity.Challenge.FinancialChat.Bot.Interfaces.Gateways;
+using Jobsity.Challenge.FinancialChat.Bot.Interfaces.MessageBroker;
 using Jobsity.Challenge.FinancialChat.Bot.Interfaces.UseCases;
 
 namespace Jobsity.Challenge.FinancialChat.Bot.UseCases.Services
@@ -15,13 +16,17 @@ namespace Jobsity.Challenge.FinancialChat.Bot.UseCases.Services
 
         private readonly ILogger<ProcessCommandUseCase> _logger;
 
+        private readonly IMessageBroker _messageBroker;
+
         public ProcessCommandUseCase(
                                      IGetInfoCommandGateway getInfoCommandGateway,
                                      IChatGateway chatGateway,
+                                     IMessageBroker messageBroker,
                                      ILogger<ProcessCommandUseCase> logger)
         {
             _getInfoCommandGateway = getInfoCommandGateway ?? throw new ArgumentNullException(nameof(getInfoCommandGateway));
             _chatGateway = chatGateway ?? throw new ArgumentNullException(nameof(chatGateway));
+            _messageBroker = messageBroker ?? throw new ArgumentNullException(nameof(messageBroker));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -36,7 +41,7 @@ namespace Jobsity.Challenge.FinancialChat.Bot.UseCases.Services
                     var commandConverter = Activator.CreateInstance(converterType) as ICommandConverter;
                     if (commandConverter is not null)
                     {
-                        await PostMessage(commandConverter.Convert(result), command, cancellationToken);
+                        QueueMessage(allowedCommand.MessageBroker, commandConverter.Convert(result), command);
                         return;
                     }
                 }
@@ -47,11 +52,11 @@ namespace Jobsity.Challenge.FinancialChat.Bot.UseCases.Services
             {
                 var message = string.Format("Error processing command {0} with parameter {1}", allowedCommand.Command, command.CommandParameter);
                 _logger.LogError(ex, message);
-                await PostMessage(message, command, cancellationToken);
+                QueueMessage(allowedCommand.MessageBroker, message, command);
             }
         }
 
-        private async Task PostMessage(string message, CommandDto command, CancellationToken cancellationToken)
+        private void QueueMessage(MessageBrokerSettings messageBroker, string message, CommandDto command)
         {
             var request = new CommandMessageRequest
             {
@@ -60,7 +65,7 @@ namespace Jobsity.Challenge.FinancialChat.Bot.UseCases.Services
                 SenderId = command.SenderId
             };
 
-            await _chatGateway.SendMessageAsyc(request, cancellationToken);
+            _messageBroker.Publish(request, messageBroker);
         }
     }
 }

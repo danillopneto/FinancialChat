@@ -1,17 +1,20 @@
-using Jobsity.Challenge.FinancialChat.Bot.Infra.Gateways;
-using Jobsity.Challenge.FinancialChat.Bot.Interfaces.Gateways;
-using Jobsity.Challenge.FinancialChat.Bot.Interfaces.UseCases;
-using Microsoft.Extensions.Options;
 using Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations;
-using System.Net.Http.Headers;
-using Jobsity.Challenge.FinancialChat.Core.Utils;
+using Jobsity.Challenge.FinancialChat.Bot.Infra.Gateways;
+using Jobsity.Challenge.FinancialChat.Bot.Infra.MessageBroker;
+using Jobsity.Challenge.FinancialChat.Bot.Interfaces.Gateways;
+using Jobsity.Challenge.FinancialChat.Bot.Interfaces.MessageBroker;
+using Jobsity.Challenge.FinancialChat.Bot.Interfaces.UseCases;
 using Jobsity.Challenge.FinancialChat.Bot.UseCases.Services;
+using Jobsity.Challenge.FinancialChat.Core.Utils;
+using Microsoft.Extensions.Options;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,6 +30,9 @@ builder.Services.AddScoped<IGetInfoCommandGateway, GetInfoCommandGateway>();
 // Add services.
 builder.Services.AddScoped<IFilterCommandUseCase, FilterCommandUseCase>();
 builder.Services.AddScoped<IProcessCommandUseCase, ProcessCommandUseCase>();
+
+// Add message broker
+builder.Services.AddScoped<IMessageBroker, RabbitMQBroker>();
 
 var configuration = builder.Configuration.Get<DataAppSettings>();
 foreach (var command in configuration.AllowedCommands)
