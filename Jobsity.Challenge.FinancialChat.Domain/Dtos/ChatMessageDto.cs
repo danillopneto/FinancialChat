@@ -21,5 +21,10 @@
         public UserDto Sender { get; set; }
 
         public DateTime Timestamp { get; set; }
+
+        public bool IsCommand()
+        {
+            return !string.IsNullOrWhiteSpace(Message) && Message.StartsWith("/");
+        }
     }
 }

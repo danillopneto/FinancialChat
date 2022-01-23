@@ -64,7 +64,6 @@ header {
 }
 
 .user {
-    /* position: relative; */
     background-color: #fafafa;
     padding: 10px;
     border-radius: 40px;
@@ -179,6 +178,10 @@ header {
     justify-self: flex-end;
     align-self: flex-end;
     margin: 5px 0;
+}
+
+.chats_wrapper .chat main .message.room span {
+    font-size: 10px;
 }
 
 .chats_wrapper .chat main .me span,

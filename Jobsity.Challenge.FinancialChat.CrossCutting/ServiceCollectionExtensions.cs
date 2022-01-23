@@ -1,10 +1,15 @@
-﻿using Jobsity.Challenge.FinancialChat.Infra.Contexts;
+﻿using Jobsity.Challenge.FinancialChat.Infra.Configurations;
+using Jobsity.Challenge.FinancialChat.Infra.Contexts;
+using Jobsity.Challenge.FinancialChat.Infra.Gateways;
 using Jobsity.Challenge.FinancialChat.Infra.Repositories;
+using Jobsity.Challenge.FinancialChat.Interfaces.Gateways;
 using Jobsity.Challenge.FinancialChat.Interfaces.Repositories;
 using Jobsity.Challenge.FinancialChat.Interfaces.UseCases;
 using Jobsity.Challenge.FinancialChat.UseCases.UseCases;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using System.Net.Http.Headers;
 
 namespace Jobsity.Challenge.FinancialChat.CrossCutting
 {
@@ -15,6 +20,31 @@ namespace Jobsity.Challenge.FinancialChat.CrossCutting
             services.AddDbContext<ChatContext>(opt => opt.UseInMemoryDatabase("FinancialChat"));
 
             services.AddScoped<ChatContext>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddGateways(this IServiceCollection services)
+        {
+            services.AddScoped<IBotGateway, BotGateway>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddHttpClients(this IServiceCollection services)
+        {
+            services.AddHttpClient(NamedHttpClients.BotApi)
+                .ConfigureHttpClient(
+                    client =>
+                    {
+                        var provider = services.BuildServiceProvider();
+                        var apiSettings = provider.GetService<ApiSettings>();
+
+                        client.BaseAddress = new Uri(apiSettings.UrlBot);
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    })
+                .AddTransientHttpErrorPolicy(PollyConfiguration());
 
             return services;
         }
@@ -30,12 +60,23 @@ namespace Jobsity.Challenge.FinancialChat.CrossCutting
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IAddToRoomUseCase, AddToRoomUseCase>();
+            services.AddScoped<IDispatchCommandUseCase, DispatchCommandUseCase>();
             services.AddScoped<IGetUserUseCase, GetUserUseCase>();
             services.AddScoped<IGetRoomUseCase, GetRoomUseCase>();
-            services.AddScoped<ISaveMessageIntoRoomUseCase, SaveMessageIntoRoomUseCase>();            
+            services.AddScoped<ISaveMessageIntoRoomUseCase, SaveMessageIntoRoomUseCase>();
             services.AddScoped<ISaveUserUseCase, SaveUserUseCase>();
 
             return services;
+        }
+
+        public static Func<PolicyBuilder<HttpResponseMessage>, IAsyncPolicy<HttpResponseMessage>> PollyConfiguration()
+        {
+            return builder => builder.WaitAndRetryAsync(new[]
+            {
+                TimeSpan.FromSeconds(1),
+                TimeSpan.FromSeconds(5),
+                TimeSpan.FromSeconds(10)
+            });
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Jobsity.Challenge.FinancialChat.Domain.Constants;
 using Jobsity.Challenge.FinancialChat.Domain.Dtos;
-using Jobsity.Challenge.FinancialChat.Domain.Entities;
+using Jobsity.Challenge.FinancialChat.Infra.Configurations;
 using Jobsity.Challenge.FinancialChat.Interfaces.UseCases;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
@@ -13,14 +13,19 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
 
         private readonly IAddToRoomUseCase _addToRoomUseCase;
 
+        private readonly DataAppSettings _dataAppSettings;
+
+        private readonly IDispatchCommandUseCase _dispatchCommandUseCase;
+
         private readonly IGetRoomUseCase _getRoomUseCase;
 
         private readonly IGetUserUseCase _getUserUseCase;
 
         private readonly ILogger<ChatHub> _logger;
 
-        private readonly ISaveUserUseCase _saveUserUseCase;
         private readonly ISaveMessageIntoRoomUseCase _saveMessageIntoRoomUseCase;
+
+        private readonly ISaveUserUseCase _saveUserUseCase;
 
         #endregion " FIELDS "
 
@@ -32,6 +37,8 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                        IGetUserUseCase getUserUseCase,
                        ISaveUserUseCase saveUserUseCase,
                        ISaveMessageIntoRoomUseCase saveMessageIntoRoomUseCase,
+                       IDispatchCommandUseCase dispatchCommandUseCase,
+                       DataAppSettings dataAppSettings,
                        ILogger<ChatHub> logger)
         {
             _addToRoomUseCase = addToRoomUseCase ?? throw new ArgumentNullException(nameof(addToRoomUseCase));
@@ -39,6 +46,8 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             _getUserUseCase = getUserUseCase ?? throw new ArgumentNullException(nameof(getUserUseCase));
             _saveUserUseCase = saveUserUseCase ?? throw new ArgumentNullException(nameof(saveUserUseCase));
             _saveMessageIntoRoomUseCase = saveMessageIntoRoomUseCase ?? throw new ArgumentNullException(nameof(saveMessageIntoRoomUseCase));
+            _dispatchCommandUseCase = dispatchCommandUseCase ?? throw new ArgumentNullException(nameof(dispatchCommandUseCase));
+            _dataAppSettings = dataAppSettings ?? throw new ArgumentNullException(nameof(dataAppSettings));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -93,8 +102,26 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
         {
             try
             {
-                await _saveMessageIntoRoomUseCase.SaveAsync(chatMessage);
-                await SendMessageToTheGroup(chatMessage);
+                if (chatMessage.IsCommand())
+                {
+                    var message = string.Empty;
+                    if (_dataAppSettings.AllowedCommands.Any(c => chatMessage.Message.StartsWith(c)))
+                    {
+                        await _dispatchCommandUseCase.DispatchAsync(chatMessage);
+                        message = $"Processing command {chatMessage.Message}...";
+                    }
+                    else
+                    {
+                        message = $"Invalid command {chatMessage.Message}";
+                    }
+
+                    await Clients.Client(Context.ConnectionId).SendAsync(ConstantsHubs.CommandReceived, new ChatMessageDto(chatMessage.Destination, message));
+                }
+                else
+                {
+                    await _saveMessageIntoRoomUseCase.SaveAsync(chatMessage);
+                    await SendMessageToTheGroup(chatMessage);
+                }
             }
             catch (Exception ex)
             {
@@ -106,6 +133,12 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
 
         #region " PRIVATE METHODS "
 
+        private async Task AddAndNotifyNewUserRoom(UserDto user, ChatRoomDto room)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, room.Id.ToString());
+            await Clients.All.SendAsync(ConstantsHubs.DefaultChat, await _getRoomUseCase.GetAll(), user);
+        }
+
         private async Task InsertCurrentUserIntoAvailableRooms()
         {
             var rooms = await _getRoomUseCase.GetAll();
@@ -115,15 +148,9 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             }
         }
 
-        private async Task AddAndNotifyNewUserRoom(UserDto user, ChatRoomDto room)
-        {
-            await Groups.AddToGroupAsync(Context.ConnectionId, room.Id.ToString());
-            await Clients.All.SendAsync(ConstantsHubs.DefaultChat, await _getRoomUseCase.GetAll(), user);
-        }
-
         private async Task SendMessageToTheGroup(ChatMessageDto chat)
         {
-            await Clients.Group(chat.Destination.ToString()).SendAsync("Receive", chat);
+            await Clients.Group(chat.Destination.ToString()).SendAsync(ConstantsHubs.Receive, chat);
         }
 
         #endregion " PRIVATE METHODS "

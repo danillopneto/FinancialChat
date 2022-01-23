@@ -1,6 +1,13 @@
 $(document).ready(function () {
     window.chat = createChatController();
     window.chat.loadUser();
+
+    $(document).on('keypress', '.message_input', function(event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            $('.send_button').click();
+        }
+    });
 });
 
 function createChatController() {
@@ -36,6 +43,10 @@ function createChatController() {
 
         onReceiveMessage: function () {
             this.connection.on("Receive", (chatData) => {
+                insertMessage(chatData);
+            });
+            
+            this.connection.on("CommandReceived", (chatData) => {
                 insertMessage(chatData);
             });
         }
@@ -114,8 +125,8 @@ async function loadRooms(connection) {
                     <main>
                     </main>
                     <footer>
-                        <input type="text" placeholder="Type here your message" data-chat="${room.id}">
-                        <a onclick="sendMessage(this)" data-chat="${room.id}">Send</a>
+                        <input type="text" placeholder="Type here your message" class="message_input" data-chat="${room.id}" >
+                        <a class="send_button" onclick="sendMessage(this)" data-chat="${room.id}">Send</a>
                     </footer>
                     </section>
                     `

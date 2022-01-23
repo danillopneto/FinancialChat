@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Jobsity.Challenge.FinancialChat.Infra\Jobsity.Challenge.FinancialChat.Infra.csproj" />
     <ProjectReference Include="..\Jobsity.Challenge.FinancialChat.Interfaces\Jobsity.Challenge.FinancialChat.Interfaces.csproj" />
   </ItemGroup>
 

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobsity.Challenge.Financial
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobsity.Challenge.FinancialChat.CrossCutting", "Jobsity.Challenge.FinancialChat.CrossCutting\Jobsity.Challenge.FinancialChat.CrossCutting.csproj", "{F24B7795-013C-43B9-B11C-CCC05A61B4DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobsity.Challenge.FinancialChat.Bot", "Jobsity.Challenge.FinancialChat.Bot\Jobsity.Challenge.FinancialChat.Bot.csproj", "{64FC035A-BCFF-40E5-A4E5-42B498A53513}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{F24B7795-013C-43B9-B11C-CCC05A61B4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F24B7795-013C-43B9-B11C-CCC05A61B4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F24B7795-013C-43B9-B11C-CCC05A61B4DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64FC035A-BCFF-40E5-A4E5-42B498A53513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64FC035A-BCFF-40E5-A4E5-42B498A53513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64FC035A-BCFF-40E5-A4E5-42B498A53513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64FC035A-BCFF-40E5-A4E5-42B498A53513}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{769AB6A9-BD01-40BE-BEC3-40F820AA7772} = {23836729-D462-4136-AAFF-E54EB6145267}
 		{5A62B991-C45D-4EA9-8CDA-817C7A4C9839} = {12F1C2CF-A017-4C55-942B-BE6F48379430}
 		{F24B7795-013C-43B9-B11C-CCC05A61B4DE} = {4D4016C2-D6DD-4DE0-AA9F-2AF49545365D}
+		{64FC035A-BCFF-40E5-A4E5-42B498A53513} = {9C50532C-AA25-420A-B652-F0BE27AECB32}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3B3AEDC-0DB9-491A-BDBB-0DD22CDFFEE8}
