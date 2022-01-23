@@ -31,7 +31,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.Financial
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Consumer", "Jobsity.Challenge.FinancialChat.Consumer\Jobsity.Challenge.FinancialChat.Consumer.csproj", "{CCCD8908-0577-4147-B0D0-7AAEF777732C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobsity.Challenge.FinancialChat.Web", "Jobsity.Challenge.FinancialChat.Web\Jobsity.Challenge.FinancialChat.Web.csproj", "{6F665087-5B99-491C-996B-A4F5A33AA83A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Web", "Jobsity.Challenge.FinancialChat.Web\Jobsity.Challenge.FinancialChat.Web.csproj", "{6F665087-5B99-491C-996B-A4F5A33AA83A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Unit Tests", "5 - Unit Tests", "{1D9555AB-4AD3-4586-8475-A530C2E5235C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobsity.Challenge.FinancialChat.UnitTests", "Jobsity.Challenge.FinancialChat.UnitTests\Jobsity.Challenge.FinancialChat.UnitTests.csproj", "{5964EDCD-4628-4EB2-A2AF-86BC9D5710B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +83,10 @@ Global
 		{6F665087-5B99-491C-996B-A4F5A33AA83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F665087-5B99-491C-996B-A4F5A33AA83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F665087-5B99-491C-996B-A4F5A33AA83A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5964EDCD-4628-4EB2-A2AF-86BC9D5710B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5964EDCD-4628-4EB2-A2AF-86BC9D5710B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5964EDCD-4628-4EB2-A2AF-86BC9D5710B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5964EDCD-4628-4EB2-A2AF-86BC9D5710B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +102,7 @@ Global
 		{5709FA96-04D0-4DA1-A3F0-E25C667FE113} = {D27753E1-E7F1-4478-AF95-E8B4B9D4B8C8}
 		{CCCD8908-0577-4147-B0D0-7AAEF777732C} = {9C50532C-AA25-420A-B652-F0BE27AECB32}
 		{6F665087-5B99-491C-996B-A4F5A33AA83A} = {9C50532C-AA25-420A-B652-F0BE27AECB32}
+		{5964EDCD-4628-4EB2-A2AF-86BC9D5710B9} = {1D9555AB-4AD3-4586-8475-A530C2E5235C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3B3AEDC-0DB9-491A-BDBB-0DD22CDFFEE8}

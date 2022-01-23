@@ -47,13 +47,14 @@ After choosing the option, access https://localhost:7020 into a web-browser and 
 ## Features included
 
 - Multiple rooms
-- Messages ordered by their `Timestamps`.
-- Command to get stocks prices via `/stock=stock_code`.
-- Messages saved into `InMemoryDatabase` so a new user could read previous messages.
-- Handling errors/commands not allowed.
+- Messages ordered by their `Timestamps`
+- Command to get stocks prices via `/stock=stock_code`
+- Messages saved into `InMemoryDatabase` so a new user could read previous messages
+- Handling errors/commands not allowed
 
 ## Features to be implemented
 
+- Unit tests with `Mock` and `FluentAssertions`
 - Authentication of users with .NET identity
 - Installer or `docker.compose.yml`
 - Limit of 50 messages per chat
