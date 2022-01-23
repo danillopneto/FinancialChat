@@ -1,11 +1,8 @@
 using Jobsity.Challenge.FinancialChat.Consumer;
 using Jobsity.Challenge.FinancialChat.Consumer.Infra.Configuration;
 using Jobsity.Challenge.FinancialChat.Consumer.Infra.Gateways;
-using Jobsity.Challenge.FinancialChat.Consumer.Infra.MessageBroker;
 using Jobsity.Challenge.FinancialChat.Consumer.Interfaces.Gateways;
-using Jobsity.Challenge.FinancialChat.Consumer.Interfaces.MessageBroker;
 using Jobsity.Challenge.FinancialChat.Core.Utils;
-using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 
 IHost host = Host.CreateDefaultBuilder(args)
@@ -24,7 +21,6 @@ IHost host = Host.CreateDefaultBuilder(args)
                 })
             .AddTransientHttpErrorPolicy(HttpUtils.PollyConfiguration());
 
-        services.AddSingleton<IMessageBroker, RabbitMQBroker>();
         services.AddSingleton<IChatGateway, ChatGateway>();
 
         services.AddHostedService<Worker>();
