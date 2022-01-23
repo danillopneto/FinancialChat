@@ -65,7 +65,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                 {
                     room = await _addToRoomUseCase.AddAsync(groupName, user.Id);
                     await AddAndNotifyNewUserRoom(user, room);
-                    await SendMessageToTheGroup(new ChatMessageDto(room.Id, $"{user.Name} has joined the group {groupName}."));
+                    await Clients.OthersInGroup(room.Id.ToString()).SendAsync(ConstantsHubs.Receive, new ChatMessageDto(room.Id, $"{user.Name} has joined the group {groupName}."));
                 }
                 else
                 {
@@ -109,7 +109,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                 else
                 {
                     await _saveMessageIntoRoomUseCase.SaveAsync(chatMessage);
-                    await SendMessageToTheGroup(chatMessage);
+                    await Clients.Group(chatMessage.Destination.ToString()).SendAsync(ConstantsHubs.Receive, chatMessage);
                 }
             }
             catch (Exception ex)
@@ -152,11 +152,6 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
             {
                 await AddToChatRoom(room.Name);
             }
-        }
-
-        private async Task SendMessageToTheGroup(ChatMessageDto chat)
-        {
-            await Clients.Group(chat.Destination.ToString()).SendAsync(ConstantsHubs.Receive, chat);
         }
 
         #endregion " PRIVATE METHODS "
