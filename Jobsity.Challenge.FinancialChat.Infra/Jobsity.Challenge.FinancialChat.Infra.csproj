@@ -9,11 +9,10 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Jobsity.Challenge.FinancialChat.Core\Jobsity.Challenge.FinancialChat.Core.csproj" />
     <ProjectReference Include="..\Jobsity.Challenge.FinancialChat.Domain\Jobsity.Challenge.FinancialChat.Domain.csproj" />
     <ProjectReference Include="..\Jobsity.Challenge.FinancialChat.Interfaces\Jobsity.Challenge.FinancialChat.Interfaces.csproj" />
   </ItemGroup>

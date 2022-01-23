@@ -1,4 +1,5 @@
-﻿using Jobsity.Challenge.FinancialChat.Domain.DataContracts.Requests;
+﻿using Jobsity.Challenge.FinancialChat.Core.Infra.Gateways;
+using Jobsity.Challenge.FinancialChat.Domain.DataContracts.Requests;
 using Jobsity.Challenge.FinancialChat.Infra.Configurations;
 using Jobsity.Challenge.FinancialChat.Interfaces.Gateways;
 using Microsoft.Extensions.Logging;

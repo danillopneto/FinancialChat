@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text;
 
-namespace Jobsity.Challenge.FinancialChat.Infra.Gateways
+namespace Jobsity.Challenge.FinancialChat.Core.Infra.Gateways
 {
     public abstract class BaseGateway<T>
     {
