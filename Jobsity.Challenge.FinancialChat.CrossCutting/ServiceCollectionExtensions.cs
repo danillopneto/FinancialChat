@@ -9,7 +9,6 @@ using Jobsity.Challenge.FinancialChat.Interfaces.UseCases;
 using Jobsity.Challenge.FinancialChat.UseCases.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Polly;
 using System.Net.Http.Headers;
 
 namespace Jobsity.Challenge.FinancialChat.CrossCutting

@@ -1,5 +1,5 @@
-﻿using Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations;
-using Jobsity.Challenge.FinancialChat.Bot.Domain.Dtos;
+﻿using Jobsity.Challenge.FinancialChat.Bot.Domain.Dtos;
+using Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations;
 
 namespace Jobsity.Challenge.FinancialChat.Bot.Interfaces.UseCases
 {

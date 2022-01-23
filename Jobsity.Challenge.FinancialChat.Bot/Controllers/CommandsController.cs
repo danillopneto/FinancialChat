@@ -1,6 +1,6 @@
+using Jobsity.Challenge.FinancialChat.Bot.Domain.Dtos;
 using Jobsity.Challenge.FinancialChat.Bot.Interfaces.UseCases;
 using Microsoft.AspNetCore.Mvc;
-using Jobsity.Challenge.FinancialChat.Bot.Domain.Dtos;
 
 namespace Jobsity.Challenge.FinancialChat.Bot.Controllers
 {

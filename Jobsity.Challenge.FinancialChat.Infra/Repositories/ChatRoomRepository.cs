@@ -90,7 +90,7 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
                                                .FirstOrDefaultAsync(x => x.Id == chatMessage.Destination);
             room.Messages.Add(chatMessage);
             _chatContext.Rooms.Update(room);
-            
+
             await _chatContext.SaveChangesAsync();
         }
     }
