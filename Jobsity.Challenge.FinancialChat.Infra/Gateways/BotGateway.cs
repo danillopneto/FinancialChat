@@ -14,7 +14,7 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Gateways
                           ILogger<BotGateway> logger)
             : base(httpClientFactory, logger)
         {
-            Client = "chatCommands";
+            Client = "commands";
         }
 
         public async Task PublishCommandAsync(CommandRequest command)

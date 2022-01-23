@@ -4,12 +4,13 @@ using Jobsity.Challenge.FinancialChat.Domain.Entities;
 using Jobsity.Challenge.FinancialChat.Interfaces.Repositories;
 using Jobsity.Challenge.FinancialChat.Interfaces.UseCases;
 
-namespace Jobsity.Challenge.FinancialChat.UseCases.UseCases
+namespace Jobsity.Challenge.FinancialChat.UseCases.Services
 {
     public class SaveUserUseCase : ISaveUserUseCase
     {
-        private readonly IUserConnectionRepository _userConnectionRepository;
         private readonly IMapper _mapper;
+
+        private readonly IUserConnectionRepository _userConnectionRepository;
 
         public SaveUserUseCase(
                                IUserConnectionRepository userConnectionRepository,

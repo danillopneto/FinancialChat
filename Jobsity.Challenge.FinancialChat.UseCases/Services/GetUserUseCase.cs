@@ -3,7 +3,7 @@ using Jobsity.Challenge.FinancialChat.Domain.Dtos;
 using Jobsity.Challenge.FinancialChat.Interfaces.Repositories;
 using Jobsity.Challenge.FinancialChat.Interfaces.UseCases;
 
-namespace Jobsity.Challenge.FinancialChat.UseCases.UseCases
+namespace Jobsity.Challenge.FinancialChat.UseCases.Services
 {
     public class GetUserUseCase : IGetUserUseCase
     {

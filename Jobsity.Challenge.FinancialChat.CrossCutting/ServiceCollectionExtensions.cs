@@ -5,7 +5,7 @@ using Jobsity.Challenge.FinancialChat.Infra.Repositories;
 using Jobsity.Challenge.FinancialChat.Interfaces.Gateways;
 using Jobsity.Challenge.FinancialChat.Interfaces.Repositories;
 using Jobsity.Challenge.FinancialChat.Interfaces.UseCases;
-using Jobsity.Challenge.FinancialChat.UseCases.UseCases;
+using Jobsity.Challenge.FinancialChat.UseCases.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;

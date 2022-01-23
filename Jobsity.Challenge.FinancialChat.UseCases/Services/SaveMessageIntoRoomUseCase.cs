@@ -4,11 +4,12 @@ using Jobsity.Challenge.FinancialChat.Domain.Entities;
 using Jobsity.Challenge.FinancialChat.Interfaces.Repositories;
 using Jobsity.Challenge.FinancialChat.Interfaces.UseCases;
 
-namespace Jobsity.Challenge.FinancialChat.UseCases.UseCases
+namespace Jobsity.Challenge.FinancialChat.UseCases.Services
 {
     public class SaveMessageIntoRoomUseCase : ISaveMessageIntoRoomUseCase
     {
         private readonly IChatRoomRepository _chatRoomRepository;
+
         private readonly IMapper _mapper;
 
         public SaveMessageIntoRoomUseCase(
