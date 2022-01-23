@@ -3,7 +3,5 @@
     public class DataAppSettings
     {
         public IEnumerable<AllowedCommandSettings> AllowedCommands { get; set; }
-
-        public string ChatApiUrl { get; set; }
     }
 }

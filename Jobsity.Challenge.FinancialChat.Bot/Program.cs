@@ -24,7 +24,6 @@ builder.Services.Configure<DataAppSettings>(builder.Configuration);
 builder.Services.AddScoped(c => c.GetService<IOptionsSnapshot<DataAppSettings>>().Value);
 
 // Add gateways.
-builder.Services.AddScoped<IChatGateway, ChatGateway>();
 builder.Services.AddScoped<IGetInfoCommandGateway, GetInfoCommandGateway>();
 
 // Add services.
@@ -47,15 +46,6 @@ foreach (var command in configuration.AllowedCommands)
             })
         .AddTransientHttpErrorPolicy(HttpUtils.PollyConfiguration());
 }
-builder.Services.AddHttpClient(NamedHttpClients.Chat)
-    .ConfigureHttpClient(
-        client =>
-        {
-            client.BaseAddress = new Uri(configuration.ChatApiUrl);
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        })
-    .AddTransientHttpErrorPolicy(HttpUtils.PollyConfiguration());
 
 var app = builder.Build();
 

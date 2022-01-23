@@ -31,6 +31,13 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Controllers
         public async Task<IActionResult> SendMessageCommand(CommandMessageDto message)
         {
             var user = await _getUserUseCase.GetUserById(message.SenderId);
+            if (user is null ||
+                _hubContext.Clients.Client(user.ConnectionId) is null)
+            {
+                _logger.LogWarning("User {UserId} is not connected anymore into the chat.", message.SenderId);
+                return Ok();
+            }
+
             var chatMessage = new ChatMessageDto(message.Destination, message.Message, user);
             await SendMessageCommand(chatMessage);
             return Ok();

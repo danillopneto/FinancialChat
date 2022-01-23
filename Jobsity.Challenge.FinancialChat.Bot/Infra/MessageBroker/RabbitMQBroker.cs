@@ -1,5 +1,5 @@
-﻿using Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations;
-using Jobsity.Challenge.FinancialChat.Bot.Interfaces.MessageBroker;
+﻿using Jobsity.Challenge.FinancialChat.Bot.Interfaces.MessageBroker;
+using Jobsity.Challenge.FinancialChat.Core.Infra.Configurations;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
@@ -8,23 +8,43 @@ namespace Jobsity.Challenge.FinancialChat.Bot.Infra.MessageBroker
 {
     public class RabbitMQBroker : IMessageBroker
     {
-        public void Publish<T>(T messageData, MessageBrokerSettings messageBroker)
-        {
-            var factory = new ConnectionFactory() { HostName = messageBroker.HostName };
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
-            channel.QueueDeclare(queue: messageBroker.Queue,
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+        private readonly ILogger<RabbitMQBroker> _logger;
 
-            var json = JsonConvert.SerializeObject(messageData);
-            var body = Encoding.UTF8.GetBytes(json);
-            channel.BasicPublish(exchange: string.Empty,
-                                 routingKey: messageBroker.RoutingKey,
-                                 basicProperties: null,
-                                 body: body);
+        public RabbitMQBroker(ILogger<RabbitMQBroker> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        public void Publish<T>(T message, MessageBrokerSettings messageBroker)
+        {
+            try
+            {
+                var factory = new ConnectionFactory() { HostName = messageBroker.HostName };
+                using var connection = factory.CreateConnection();
+                using var channel = connection.CreateModel();
+                channel.QueueDeclare(
+                                     queue: messageBroker.Queue,
+                                     durable: false,
+                                     exclusive: false,
+                                     autoDelete: false,
+                                     arguments: null);
+
+                var json = JsonConvert.SerializeObject(message);
+                var body = Encoding.UTF8.GetBytes(json);
+
+                _logger.LogInformation("Publishing {Message} into {Queue} - {RoutingKey}", json, messageBroker.Queue, messageBroker.RoutingKey);
+
+                channel.BasicPublish(
+                                     exchange: string.Empty,
+                                     routingKey: messageBroker.RoutingKey,
+                                     basicProperties: null,
+                                     body: body);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error trying to publish message into {Hostname}", messageBroker.HostName);
+                throw;
+            }
         }
     }
 }

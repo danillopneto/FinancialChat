@@ -5,13 +5,12 @@ using Jobsity.Challenge.FinancialChat.Bot.Interfaces.Domain;
 using Jobsity.Challenge.FinancialChat.Bot.Interfaces.Gateways;
 using Jobsity.Challenge.FinancialChat.Bot.Interfaces.MessageBroker;
 using Jobsity.Challenge.FinancialChat.Bot.Interfaces.UseCases;
+using Jobsity.Challenge.FinancialChat.Core.Infra.Configurations;
 
 namespace Jobsity.Challenge.FinancialChat.Bot.UseCases.Services
 {
     public class ProcessCommandUseCase : IProcessCommandUseCase
     {
-        private readonly IChatGateway _chatGateway;
-
         private readonly IGetInfoCommandGateway _getInfoCommandGateway;
 
         private readonly ILogger<ProcessCommandUseCase> _logger;
@@ -20,12 +19,10 @@ namespace Jobsity.Challenge.FinancialChat.Bot.UseCases.Services
 
         public ProcessCommandUseCase(
                                      IGetInfoCommandGateway getInfoCommandGateway,
-                                     IChatGateway chatGateway,
                                      IMessageBroker messageBroker,
                                      ILogger<ProcessCommandUseCase> logger)
         {
             _getInfoCommandGateway = getInfoCommandGateway ?? throw new ArgumentNullException(nameof(getInfoCommandGateway));
-            _chatGateway = chatGateway ?? throw new ArgumentNullException(nameof(chatGateway));
             _messageBroker = messageBroker ?? throw new ArgumentNullException(nameof(messageBroker));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }

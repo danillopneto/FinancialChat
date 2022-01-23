@@ -1,4 +1,6 @@
-﻿namespace Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations
+﻿using Jobsity.Challenge.FinancialChat.Core.Infra.Configurations;
+
+namespace Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations
 {
     public class AllowedCommandSettings
     {

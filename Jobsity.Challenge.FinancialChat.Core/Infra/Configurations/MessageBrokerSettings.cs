@@ -1,4 +1,4 @@
-﻿namespace Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations
+﻿namespace Jobsity.Challenge.FinancialChat.Core.Infra.Configurations
 {
     public class MessageBrokerSettings
     {

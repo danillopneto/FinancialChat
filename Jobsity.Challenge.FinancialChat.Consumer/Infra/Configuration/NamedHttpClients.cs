@@ -1,4 +1,4 @@
-﻿namespace Jobsity.Challenge.FinancialChat.Bot.Infra.Configurations
+﻿namespace Jobsity.Challenge.FinancialChat.Consumer.Infra.Configuration
 {
     public static class NamedHttpClients
     {
