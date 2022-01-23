@@ -1,10 +1,10 @@
-$(document).ready(function () {
+﻿$(document).ready(function () {
     window.chat = createChatController();
     window.chat.loadUser();
 
-    $(document).on('keypress', '.message_input', function(event) {
+    $(document).on('keypress', '.message_input', function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '13'){
+        if (keycode == '13') {
             $('.send_button').click();
         }
     });
@@ -45,7 +45,7 @@ function createChatController() {
             this.connection.on("Receive", (chatData) => {
                 insertMessage(chatData);
             });
-            
+
             this.connection.on("CommandReceived", (chatData) => {
                 insertMessage(chatData);
             });
@@ -64,7 +64,7 @@ async function startConnection(chat) {
         chat.connection.on('userData', (user) => {
             window.chat.state = user;
         });
-    
+
         loadRooms(chat.connection);
 
         chat.connection.onclose(async () => {
@@ -130,7 +130,7 @@ async function loadRooms(connection) {
                     </footer>
                     </section>
                     `
-        
+
                     containerChats.append(`<div data-id="${room.id}" class="roomChat">${chat}</div>`);
                     room.messages.forEach((m) => {
                         insertMessage(m);
@@ -139,13 +139,13 @@ async function loadRooms(connection) {
             } else {
                 $(`section.room[data-id="${room.id}"] .room_count`).html(`(${room.users.length} active users)`);
             }
-        });        
+        });
     });
 }
 
 function openChat(e) {
     var room = {
-        id:  $(e).data('id'),
+        id: $(e).data('id'),
         name: $(e).data('name')
     }
 
@@ -175,7 +175,7 @@ function insertMessage(chatData) {
         if (lastMessage.length) {
             lastMessage[0].scrollIntoView();
         }
-    }    
+    }
 }
 
 function sendMessage(e) {
