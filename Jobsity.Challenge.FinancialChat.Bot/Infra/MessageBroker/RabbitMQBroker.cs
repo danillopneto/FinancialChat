@@ -19,7 +19,7 @@ namespace Jobsity.Challenge.FinancialChat.Bot.Infra.MessageBroker
         {
             try
             {
-                var factory = new ConnectionFactory() { HostName = messageBroker.HostName };
+                var factory = new ConnectionFactory() { Uri = new Uri(messageBroker.ConnectionString) };
                 using var connection = factory.CreateConnection();
                 using var channel = connection.CreateModel();
                 channel.QueueDeclare(
@@ -42,7 +42,7 @@ namespace Jobsity.Challenge.FinancialChat.Bot.Infra.MessageBroker
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error trying to publish message into {Hostname}", messageBroker.HostName);
+                _logger.LogError(ex, "Error trying to publish message into {Hostname}", messageBroker.ConnectionString);
                 throw;
             }
         }

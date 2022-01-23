@@ -13,9 +13,10 @@ builder.Services.AddCors(options =>
         p =>
         {
             p.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
-                   .AllowAnyHeader()
-                   .AllowAnyMethod()
-                   .AllowCredentials()
+             .SetIsOriginAllowedToAllowWildcardSubdomains()
+             .AllowAnyHeader()
+             .AllowAnyMethod()
+             .AllowCredentials()
             ;
         });
 });

@@ -20,7 +20,7 @@ namespace Jobsity.Challenge.FinancialChat.Consumer.Infra.MessageBroker
 
         public void ProcessMessage(MessageBrokerSettings messageBroker)
         {
-            var factory = new ConnectionFactory() { HostName = messageBroker.HostName, DispatchConsumersAsync = true };
+                var factory = new ConnectionFactory() { Uri = new Uri(messageBroker.ConnectionString), DispatchConsumersAsync = true };
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 

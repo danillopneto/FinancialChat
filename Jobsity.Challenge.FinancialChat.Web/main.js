@@ -170,7 +170,12 @@ function insertMessage(chatData) {
     chatContainer.find('main').append(chatMessage);
     if (!chatContainer.is(':visible')) {
         $(`.rooms .room[data-id="${chatData.destination}"]`).addClass('new_notification');
-    }
+    } else {
+        var lastMessage = $('.chat main .message').last();
+        if (lastMessage.length) {
+            lastMessage[0].scrollIntoView();
+        }
+    }    
 }
 
 function sendMessage(e) {

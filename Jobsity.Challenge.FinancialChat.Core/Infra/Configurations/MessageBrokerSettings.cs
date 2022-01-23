@@ -2,7 +2,7 @@
 {
     public class MessageBrokerSettings
     {
-        public string HostName { get; set; }
+        public string ConnectionString { get; set; }
 
         public string Queue { get; set; }
 
