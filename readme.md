@@ -24,32 +24,19 @@ Once you've installed, run the command bellow to start RabbitMQ:
 
 ### **1º) Option**
 
-Unfortunately there wasn't time to run through docker, so we're going to run each application in a console in the order below:
+*Obs.: Navigate the folder until you reach the project' folder.
 
-*Obs.: Navigate the folder until you reach the solution folder.  
-You can use Visual Studio to open multiple consoles or use the Windows Terminal, for instance.*
+Run the command:
+- ` docker-compose up --build` 
 
-> **1.** `dotnet watch run --no-build --launch-profile "Jobsity.Challenge.FinancialChat.SignalR" --urls=https://localhost:5001/ --project ".\Jobsity.Challenge.FinancialChat.SignalR"`  
-> **2.** `dotnet watch run --no-build --launch-profile "Jobsity.Challenge.FinancialChat.Bot" --urls=https://localhost:7152 --project ".\Jobsity.Challenge.FinancialChat.Bot"`  
-> **3.** `dotnet watch run --no-build --launch-profile "Jobsity.Challenge.FinancialChat.Consumer" --project ".\Jobsity.Challenge.FinancialChat.Consumer"`  
-> **4.** `dotnet watch run --no-build --launch-profile "Jobsity.Challenge.FinancialChat.Web" --urls=https://localhost:7020 --project ".\Jobsity.Challenge.FinancialChat.Web"`  
-
-### **2º) Option**
-
-> 1. Open the solution with Visual Studio  
-> 2. Right-click into the Solution -> `Properties`  
-> 3. Check `Multiple startup projects` then set as bellow:  
-> ![Startup](/screenshots/multiple_startup.png?raw=true "Por hora")  
-> **4.** Click on `Start`  
-
-After choosing the option, access https://localhost:7020 into a web-browser and start to using the **Financial Chat**.
+After that , access http://localhost into a web-browser and start to using the **Financial Chat**.
 
 ## Features included
 
 - Multiple rooms
 - Messages ordered by their `Timestamps`
 - Command to get stocks prices via `/stock=stock_code`
-- Messages saved into `InMemoryDatabase` so a new user could read previous messages
+- Messages saved into `MySql Database` so a new user could read previous messages
 - Handling errors/commands not allowed
 
 ## Features to be implemented
