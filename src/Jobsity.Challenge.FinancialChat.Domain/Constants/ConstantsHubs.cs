@@ -7,5 +7,7 @@
         public const string DefaultChat = "chat";
 
         public const string Receive = "Receive";
+
+        public const string UserData = "userData";
     }
 }

@@ -11,11 +11,15 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Controllers
     [Route("[controller]")]
     public class ChatController : ControllerBase
     {
+        #region " FIELDS "
+
         private readonly IGetUserUseCase _getUserUseCase;
 
         private readonly IHubContext<ChatHub> _hubContext;
 
         private readonly ILogger<ChatController> _logger;
+        
+        #endregion " FIELDS "
 
         public ChatController(
                               IHubContext<ChatHub> hubContext,
@@ -35,11 +39,12 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Controllers
                 _hubContext.Clients.Client(user.ConnectionId) is null)
             {
                 _logger.LogWarning("User {UserId} is not connected anymore into the chat.", message.SenderId);
-                return Ok();
+            }
+            else
+            {
+                await SendMessageCommand(new ChatMessageDto(message.Destination, message.Message, user));
             }
 
-            var chatMessage = new ChatMessageDto(message.Destination, message.Message, user);
-            await SendMessageCommand(chatMessage);
             return Ok();
         }
 

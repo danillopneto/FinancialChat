@@ -44,6 +44,8 @@ services:
     depends_on:
       - signalr
       - bot-api
+    environment:
+      - SignalRUrl=http://signalr/
     build:
       context: ./src
       dockerfile: ./Jobsity.Challenge.FinancialChat.Web/Dockerfile

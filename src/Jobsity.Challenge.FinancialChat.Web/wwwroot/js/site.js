@@ -55,8 +55,8 @@ function createChatController() {
 
 async function startConnection(chat) {
     try {
-
-        chat.connection = new signalR.HubConnectionBuilder().withUrl("/chat?user=" + JSON.stringify(window.chat.state)).build();
+        var signalRUrl = $('#SignalRUrl').val();
+        chat.connection = new signalR.HubConnectionBuilder().withUrl(`${signalRUrl}chat?user=` + JSON.stringify(window.chat.state)).build();
         await chat.connection.start();
 
         $('.info_chat').show();

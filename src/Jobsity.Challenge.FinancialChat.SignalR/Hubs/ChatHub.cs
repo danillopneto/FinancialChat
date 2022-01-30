@@ -85,12 +85,10 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                 var userDto = JsonConvert.DeserializeObject<NewUserDto>(Context.GetHttpContext().Request.Query["user"]);
                 var user = await _saveUserUseCase.SaveUser(userDto, Context.ConnectionId);
 
-                await Clients.Caller.SendAsync("userData", user);
+                await Clients.Caller.SendAsync(ConstantsHubs.UserData, user);
+                await Clients.Caller.SendAsync(ConstantsHubs.DefaultChat, await _getRoomUseCase.GetAll(), user);
 
                 var rooms = await _getRoomUseCase.GetAll();
-                await InsertCurrentUserIntoAvailableRooms(rooms);
-
-                await Clients.All.SendAsync(ConstantsHubs.DefaultChat, rooms, user);
                 await base.OnConnectedAsync();
             }
             catch (Exception ex)
@@ -143,15 +141,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                 message = $"Invalid command {chatMessage.Message}";
             }
 
-            await Clients.Client(Context.ConnectionId).SendAsync(ConstantsHubs.CommandReceived, new ChatMessageDto(chatMessage.Destination, message));
-        }
-
-        private async Task InsertCurrentUserIntoAvailableRooms(IEnumerable<ChatRoomDto> rooms)
-        {
-            foreach (var room in rooms)
-            {
-                await AddToChatRoom(room.Name);
-            }
+            await Clients.Caller.SendAsync(ConstantsHubs.CommandReceived, new ChatMessageDto(chatMessage.Destination, message));
         }
 
         #endregion " PRIVATE METHODS "
