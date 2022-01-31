@@ -21,7 +21,7 @@ function createChatController() {
         connection: null,
         loadUser: function () {
             this.state.name = prompt('Type your name to enter the chat', 'Username');
-            this.state.dtConnection = new Date();
+            this.state.dtConnection = getCurrentDateWithoutTimezone();
             this.connectUserToChat();
         },
         connectUserToChat: function () {
@@ -32,7 +32,7 @@ function createChatController() {
                 sender: this.state,
                 message: to.message,
                 destination: to.destination,
-                timestamp: new Date()
+                timestamp: getCurrentDateWithoutTimezone()
             };
 
             this.connection.invoke("SendMessage", (chatMessage))
@@ -192,6 +192,6 @@ function sendMessage(e) {
     window.chat.sendMessage(input);
 }
 
-function checkIfElementExist(id, data) {
-    return $('section[data-' + data + '="' + id + '"]') && $('section[data-' + data + '="' + id + '"]').length > 0;
-}
+let checkIfElementExist = (id, data) => $('section[data-' + data + '="' + id + '"]') && $('section[data-' + data + '="' + id + '"]').length > 0;
+
+let getCurrentDateWithoutTimezone = () => new Date().toISOString().slice(0, -1);
