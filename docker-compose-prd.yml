@@ -1,0 +1,70 @@
+version: "3.5"
+
+services:
+  nginx:
+    image: danillopneto/jobsitychallengefinancialchat_nginx
+    depends_on:
+      - signalr
+      - bot-api
+      - client
+    restart: always
+    ports:
+      - "80:80"
+
+  db:
+    image: mysql:8.0.28
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: financialchat
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbuserpassword
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3.9-management-alpine
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 5s
+      timeout: 15s
+      retries: 1
+
+  client:
+    image: danillopneto/jobsitychallengefinancialchat_client
+    depends_on:
+      - signalr
+      - bot-api
+    environment:
+      - SignalRUrl=http://signalr/
+    restart: always
+
+  signalr:
+    image: danillopneto/jobsitychallengefinancialchat_signalr
+    depends_on:
+      - bot-api
+    environment:
+      - ConnectionStrings__DefaultConnection=server=db;port=3306;userid=dbuser;password=dbuserpassword;database=financialchat;
+      - Apis__UrlBot=http://bot-api/bot-api/v1/
+    restart: always
+
+  bot-api:
+    image: danillopneto/jobsitychallengefinancialchat_bot-api
+    depends_on:
+      - rabbitmq
+    environment:
+      - AllowedCommands__0__MessageBroker__ConnectionString=amqp://guest:guest@rabbitmq:5672/
+    restart: always
+
+  consumer:
+    image: danillopneto/jobsitychallengefinancialchat_consumer
+    depends_on:
+      - rabbitmq
+      - client
+    environment:
+      - ChatApiUrl=http://signalr/chat
+      - MessageBroker__ConnectionString=amqp://guest:guest@rabbitmq:5672/
+    restart: on-failure
+
+volumes:
+  dbdata:

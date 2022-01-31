@@ -1,0 +1,88 @@
+version: "3.5"
+
+services:
+  nginx:
+    depends_on:
+      - signalr
+      - bot-api
+      - client
+    restart: always # because it is routing traffic to our entire app
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "80:80"
+
+  db:
+    image: mysql:8.0.28
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: financialchat
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbuserpassword
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "0:3306"
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3.9-management-alpine
+    ports:
+        - 0:5672
+        - 15672:15672
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 5s
+      timeout: 15s
+      retries: 1
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
+  client:
+    depends_on:
+      - signalr
+      - bot-api
+    environment:
+      - SignalRUrl=http://signalr/
+    build:
+      context: ./src
+      dockerfile: ./Jobsity.Challenge.FinancialChat.Web/Dockerfile
+    restart: always
+
+  signalr:
+    depends_on:
+      - bot-api
+    environment:
+      - ConnectionStrings__DefaultConnection=server=db;port=3306;userid=dbuser;password=dbuserpassword;database=financialchat;
+      - Apis__UrlBot=http://bot-api/bot-api/v1/
+    build:
+      context: ./src
+      dockerfile: ./Jobsity.Challenge.FinancialChat.SignalR/Dockerfile
+    restart: always
+
+  bot-api:
+    depends_on:
+      - rabbitmq
+    environment:
+      - AllowedCommands__0__MessageBroker__ConnectionString=amqp://guest:guest@rabbitmq:5672/
+    build:
+      context: ./src
+      dockerfile: ./Jobsity.Challenge.FinancialChat.Bot/Dockerfile
+    restart: always
+
+  consumer:
+    depends_on:
+      - rabbitmq
+      - client
+    environment:
+      - ChatApiUrl=http://signalr/chat
+      - MessageBroker__ConnectionString=amqp://guest:guest@rabbitmq:5672/
+    build:
+      context: ./src
+      dockerfile: ./Jobsity.Challenge.FinancialChat.Consumer/Dockerfile
+    restart: on-failure
+
+volumes:
+  dbdata:

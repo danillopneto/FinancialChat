@@ -5,37 +5,37 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presenters", "1 - Presenters", "{9C50532C-AA25-420A-B652-F0BE27AECB32}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.SignalR", "Jobsity.Challenge.FinancialChat.SignalR\Jobsity.Challenge.FinancialChat.SignalR.csproj", "{0FCA69B5-4C3C-4E79-A5C4-D0613D607DCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.SignalR", "src\Jobsity.Challenge.FinancialChat.SignalR\Jobsity.Challenge.FinancialChat.SignalR.csproj", "{0FCA69B5-4C3C-4E79-A5C4-D0613D607DCA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Entities", "2 - Entities", "{12F1C2CF-A017-4C55-942B-BE6F48379430}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Domain", "Jobsity.Challenge.FinancialChat.Domain\Jobsity.Challenge.FinancialChat.Domain.csproj", "{5A665FDF-0BC3-415C-9D38-00C8CFE04748}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Domain", "src\Jobsity.Challenge.FinancialChat.Domain\Jobsity.Challenge.FinancialChat.Domain.csproj", "{5A665FDF-0BC3-415C-9D38-00C8CFE04748}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - External Interfaces", "4 - External Interfaces", "{4D4016C2-D6DD-4DE0-AA9F-2AF49545365D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Infra", "Jobsity.Challenge.FinancialChat.Infra\Jobsity.Challenge.FinancialChat.Infra.csproj", "{C7F87262-8309-4E1F-81FB-A83420E929AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Infra", "src\Jobsity.Challenge.FinancialChat.Infra\Jobsity.Challenge.FinancialChat.Infra.csproj", "{C7F87262-8309-4E1F-81FB-A83420E929AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - UserCases", "3 - UserCases", "{23836729-D462-4136-AAFF-E54EB6145267}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.UseCases", "Jobsity.Challenge.FinancialChat.UseCases\Jobsity.Challenge.FinancialChat.UseCases.csproj", "{769AB6A9-BD01-40BE-BEC3-40F820AA7772}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.UseCases", "src\Jobsity.Challenge.FinancialChat.UseCases\Jobsity.Challenge.FinancialChat.UseCases.csproj", "{769AB6A9-BD01-40BE-BEC3-40F820AA7772}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Interfaces", "Jobsity.Challenge.FinancialChat.Interfaces\Jobsity.Challenge.FinancialChat.Interfaces.csproj", "{5A62B991-C45D-4EA9-8CDA-817C7A4C9839}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Interfaces", "src\Jobsity.Challenge.FinancialChat.Interfaces\Jobsity.Challenge.FinancialChat.Interfaces.csproj", "{5A62B991-C45D-4EA9-8CDA-817C7A4C9839}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.CrossCutting", "Jobsity.Challenge.FinancialChat.CrossCutting\Jobsity.Challenge.FinancialChat.CrossCutting.csproj", "{F24B7795-013C-43B9-B11C-CCC05A61B4DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.CrossCutting", "src\Jobsity.Challenge.FinancialChat.CrossCutting\Jobsity.Challenge.FinancialChat.CrossCutting.csproj", "{F24B7795-013C-43B9-B11C-CCC05A61B4DE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Bot", "Jobsity.Challenge.FinancialChat.Bot\Jobsity.Challenge.FinancialChat.Bot.csproj", "{64FC035A-BCFF-40E5-A4E5-42B498A53513}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Bot", "src\Jobsity.Challenge.FinancialChat.Bot\Jobsity.Challenge.FinancialChat.Bot.csproj", "{64FC035A-BCFF-40E5-A4E5-42B498A53513}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Core", "0 - Core", "{D27753E1-E7F1-4478-AF95-E8B4B9D4B8C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Core", "Jobsity.Challenge.FinancialChat.Core\Jobsity.Challenge.FinancialChat.Core.csproj", "{5709FA96-04D0-4DA1-A3F0-E25C667FE113}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Core", "src\Jobsity.Challenge.FinancialChat.Core\Jobsity.Challenge.FinancialChat.Core.csproj", "{5709FA96-04D0-4DA1-A3F0-E25C667FE113}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Consumer", "Jobsity.Challenge.FinancialChat.Consumer\Jobsity.Challenge.FinancialChat.Consumer.csproj", "{CCCD8908-0577-4147-B0D0-7AAEF777732C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Consumer", "src\Jobsity.Challenge.FinancialChat.Consumer\Jobsity.Challenge.FinancialChat.Consumer.csproj", "{CCCD8908-0577-4147-B0D0-7AAEF777732C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Web", "Jobsity.Challenge.FinancialChat.Web\Jobsity.Challenge.FinancialChat.Web.csproj", "{6F665087-5B99-491C-996B-A4F5A33AA83A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Web", "src\Jobsity.Challenge.FinancialChat.Web\Jobsity.Challenge.FinancialChat.Web.csproj", "{6F665087-5B99-491C-996B-A4F5A33AA83A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Unit Tests", "5 - Unit Tests", "{1D9555AB-4AD3-4586-8475-A530C2E5235C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobsity.Challenge.FinancialChat.UnitTests", "Jobsity.Challenge.FinancialChat.UnitTests\Jobsity.Challenge.FinancialChat.UnitTests.csproj", "{5964EDCD-4628-4EB2-A2AF-86BC9D5710B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.UnitTests", "src\Jobsity.Challenge.FinancialChat.UnitTests\Jobsity.Challenge.FinancialChat.UnitTests.csproj", "{5964EDCD-4628-4EB2-A2AF-86BC9D5710B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
