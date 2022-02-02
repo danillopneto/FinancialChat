@@ -10,9 +10,14 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
     {
         private readonly ChatContext _chatContext;
 
-        public ChatRoomRepository(ChatContext chatContext)
+        private readonly DataAppSettings _dataAppSettings;
+
+        public ChatRoomRepository(
+                                  ChatContext chatContext,
+                                  DataAppSettings dataAppSettings)
         {
             _chatContext = chatContext ?? throw new ArgumentNullException(nameof(chatContext));
+            _dataAppSettings = dataAppSettings ?? throw new ArgumentNullException(nameof(dataAppSettings));
         }
 
         public async Task<ChatRoom> AddUser(string roomName, User user)
@@ -36,10 +41,10 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
         }
 
         public async Task<IEnumerable<ChatRoom>> GetAllRooms() =>
-            await _chatContext.Rooms.Include(m => m.Messages.OrderBy(x => x.Timestamp))
+            await _chatContext.Rooms.Include(m => m.Messages.OrderBy(t => t.Timestamp))
                                     .ThenInclude(s => s.Sender)
                                     .AsNoTracking()
-                                    .Include(r => r.Users)
+                                    .Include(u => u.Users)
                                     .AsNoTracking()
                                     .ToListAsync();
 
@@ -51,7 +56,7 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
         
         public async Task<ChatRoom> GetRoomByName(string roomName) => 
             await _chatContext.Rooms.Where(r => r.Name == roomName)
-                                    .Include(r => r.Users)
+                                    .Include(u => u.Users)
                                     .AsNoTracking()
                                     .FirstOrDefaultAsync();
 
@@ -82,8 +87,13 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
 
         public async Task SaveNewMessageAsync(ChatMessage chatMessage)
         {
-            var room = await _chatContext.Rooms.Include(m => m.Messages)
-                                               .FirstOrDefaultAsync(x => x.Id == chatMessage.Destination);
+            var room = await _chatContext.Rooms.Include(m => m.Messages.OrderBy(t => t.Timestamp))
+                                               .FirstOrDefaultAsync(r => r.Id == chatMessage.Destination);
+            while (room.Messages.Count >= _dataAppSettings.LimitOfMessagesPerRoom)
+            {
+                room.Messages.RemoveAt(0);
+            }
+
             room.Messages.Add(chatMessage);
             _chatContext.Rooms.Update(room);
 

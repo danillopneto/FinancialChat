@@ -19,12 +19,22 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasMany(c => c.ChatRooms)
-                .WithMany(e => e.Users);
+            MapUser(modelBuilder);
 
+            MapChatMessage(modelBuilder);
+        }
+
+        private static void MapChatMessage(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<ChatMessage>()
-                .HasOne(c => c.Sender);
+                            .HasOne(c => c.Sender);
+        }
+
+        private static void MapUser(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                            .HasMany(c => c.ChatRooms)
+                            .WithMany(e => e.Users);
         }
     }
 }
