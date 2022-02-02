@@ -51,10 +51,10 @@ You must have *docker* installed on your operating system (Linux, Windows or Mac
 - Messages saved into `MySql Database` so a new user could read previous messages
 - Handling errors/commands not allowed
 - Run the application via `docker.compose.yml`
+- Limit of 50 messages per chat
 
 # Features to be implemented
 
 - Unit tests with `Mock` and `FluentAssertions`
 - Authentication of users with .NET identity
-- Limit of 50 messages per chat
 - Saving/Gettings messages with encryption
