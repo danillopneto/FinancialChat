@@ -55,7 +55,7 @@ services:
     depends_on:
       - bot-api
     environment:
-      - ConnectionStrings__DefaultConnection=server=db;port=3306;userid=dbuser;password=dbuserpassword;database=financialchat;
+      - ConnectionStrings__DefaultConnection=server=db;port=3306;userid=dbuser;password=dbuserpassword;database=financialchat;SslMode=none;
       - Apis__UrlBot=http://bot-api/bot-api/v1/
     build:
       context: ./src

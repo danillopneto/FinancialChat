@@ -5,16 +5,26 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Contexts
 {
     public class ChatContext : DbContext
     {
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+
+        public DbSet<ChatRoom> Rooms { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
         public ChatContext(DbContextOptions<ChatContext> options)
           : base(options)
         {
             Database.EnsureCreated();
         }
 
-        public DbSet<ChatMessage> ChatMessages { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasMany(c => c.ChatRooms)
+                .WithMany(e => e.Users);
 
-        public DbSet<ChatRoom> Rooms { get; set; }
-
-        public DbSet<User> Users { get; set; }
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(c => c.Sender);
+        }
     }
 }

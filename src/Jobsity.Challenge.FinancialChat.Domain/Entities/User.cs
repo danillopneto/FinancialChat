@@ -12,5 +12,7 @@ namespace Jobsity.Challenge.FinancialChat.Domain.Entities
         public DateTime DtConnection { get; set; }
 
         public string Name { get; set; }
+
+        public IEnumerable<ChatRoom> ChatRooms { get; set; }
     }
 }
