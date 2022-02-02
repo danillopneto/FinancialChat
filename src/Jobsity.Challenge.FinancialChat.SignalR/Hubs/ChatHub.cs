@@ -85,10 +85,10 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                 var userDto = JsonConvert.DeserializeObject<NewUserDto>(Context.GetHttpContext().Request.Query["user"]);
                 var user = await _saveUserUseCase.SaveUser(userDto, Context.ConnectionId);
 
-                await Clients.Caller.SendAsync(ConstantsHubs.UserData, user);
-                await Clients.Caller.SendAsync(ConstantsHubs.DefaultChat, await _getRoomUseCase.GetAll(), user);
-
                 var rooms = await _getRoomUseCase.GetAll();
+                await Clients.Caller.SendAsync(ConstantsHubs.UserData, user);
+                await Clients.Caller.SendAsync(ConstantsHubs.DefaultChat, rooms, user);
+
                 await base.OnConnectedAsync();
             }
             catch (Exception ex)
@@ -107,7 +107,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                 }
                 else
                 {
-                    await _saveMessageIntoRoomUseCase.SaveAsync(chatMessage);
+                    await _saveMessageIntoRoomUseCase.SaveAsync(chatMessage.Encrypted(_dataAppSettings.AESEncryptKey));
                     await Clients.Group(chatMessage.Destination.ToString()).SendAsync(ConstantsHubs.Receive, chatMessage);
                 }
             }
