@@ -5,5 +5,7 @@
         public string[] AllowedCommands { get; set; }
 
         public ApiSettings Apis { get; set; }
+
+        public int LimitOfMessagesPerRoom { get; set; }
     }
 }
