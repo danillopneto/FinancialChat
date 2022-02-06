@@ -107,7 +107,7 @@ namespace Jobsity.Challenge.FinancialChat.SignalR.Hubs
                 }
                 else
                 {
-                    await _saveMessageIntoRoomUseCase.SaveAsync(chatMessage.Encrypted(_dataAppSettings.AESEncryptKey));
+                    await _saveMessageIntoRoomUseCase.SaveAsync(chatMessage);
                     await Clients.Group(chatMessage.Destination.ToString()).SendAsync(ConstantsHubs.Receive, chatMessage);
                 }
             }
