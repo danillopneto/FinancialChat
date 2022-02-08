@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - External Interfaces", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.Infra", "src\Jobsity.Challenge.FinancialChat.Infra\Jobsity.Challenge.FinancialChat.Infra.csproj", "{C7F87262-8309-4E1F-81FB-A83420E929AF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - UserCases", "3 - UserCases", "{23836729-D462-4136-AAFF-E54EB6145267}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - UseCases", "3 - UseCases", "{23836729-D462-4136-AAFF-E54EB6145267}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobsity.Challenge.FinancialChat.UseCases", "src\Jobsity.Challenge.FinancialChat.UseCases\Jobsity.Challenge.FinancialChat.UseCases.csproj", "{769AB6A9-BD01-40BE-BEC3-40F820AA7772}"
 EndProject
