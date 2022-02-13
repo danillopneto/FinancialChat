@@ -132,7 +132,7 @@ window.financialchat.prototype = {
                     let sectionRoom = `
                         <section class="room-selection room box_shadow_0" data-id="${room.id}" data-name="${room.name}">
                         <p class="room_name"> ${room.name}</p>
-                        <p class="room_count">(${room.users.length} active users)</p>
+                        <p class="room_count">(${room.users.length} users)</p>
                         </section>
                     `;
 
@@ -164,7 +164,7 @@ window.financialchat.prototype = {
                         });
                     }
                 } else {
-                    $(`section.room[data-id="${room.id}"] .room_count`).html(`(${room.users.length} active users)`);
+                    $(`section.room[data-id="${room.id}"] .room_count`).html(`(${room.users.length} users)`);
                 }
             });
         });
