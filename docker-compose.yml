@@ -14,16 +14,14 @@ services:
       - "80:80"
 
   db:
-    image: mysql:8.0.28
+    image: mcr.microsoft.com/mssql/server:2019-CU15-ubuntu-20.04
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: 1
-      MYSQL_DATABASE: financialchat
-      MYSQL_USER: dbuser
-      MYSQL_PASSWORD: dbuserpassword
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: DockerSql2019!
     volumes:
-      - dbdata:/var/lib/mysql
+      - ./dbdata:/var/opt/mssql/data
     ports:
-      - "0:3306"
+      - "1433:1433"
     restart: always
 
   rabbitmq:
@@ -37,25 +35,26 @@ services:
       timeout: 15s
       retries: 1
     volumes:
-        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+        - rabbit:/var/lib/rabbitmq/
+        - rabbit:/var/log/rabbitmq
 
   client:
     depends_on:
       - signalr
       - bot-api
     environment:
-      - SignalRUrl=http://signalr/
+      - ConnectionStrings__DefaultConnection=Data Source=db,1433;Initial Catalog=IdentityFinancialChat;User Id=SA;Password=DockerSql2019!;
+      - SignalRUrl=http://localhost/
     build:
       context: ./src
-      dockerfile: ./Jobsity.Challenge.FinancialChat.Web/Dockerfile
+      dockerfile: ./Jobsity.Challenge.FinancialChat.UI.Web/Dockerfile
     restart: always
 
   signalr:
     depends_on:
       - bot-api
     environment:
-      - ConnectionStrings__DefaultConnection=server=db;port=3306;userid=dbuser;password=dbuserpassword;database=financialchat;SslMode=none;
+      - ConnectionStrings__DefaultConnection=Data Source=db,1433;Initial Catalog=FinancialChat;User Id=SA;Password=DockerSql2019!;
       - Apis__UrlBot=http://bot-api/bot-api/v1/
     build:
       context: ./src
@@ -85,4 +84,5 @@ services:
     restart: on-failure
 
 volumes:
-  dbdata:
+  dbdata:  
+  rabbit:
