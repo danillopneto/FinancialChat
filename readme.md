@@ -36,7 +36,7 @@ You must have *docker* installed on your operating system (Linux, Windows or Mac
 
 1. Run the following commands to start RabbitMQ and MySQL:  
     - `docker run -d -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management`  
-    - `docker run -d -it --rm --name mysql -p 3306:3306 -e MYSQL_RANDOM_ROOT_PASSWORD=1 -e MYSQL_DATABASE=financialchat -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbuserpassword mysql:8.0.0`
+    - `docker run --name sqlserver -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=DockerSql2019!" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-CU15-ubuntu-20.04`
 1. Open the solution with Visual Studio  
 2. Right-click into the Solution -> `Properties`  
 3. Check `Multiple startup projects` then set as bellow:  
@@ -52,9 +52,14 @@ You must have *docker* installed on your operating system (Linux, Windows or Mac
 - Handling errors/commands not allowed
 - Run the application via `docker.compose.yml`
 - Limit of 50 messages per chat
+- Authentication of users with .NET identity
 
 # Features to be implemented
 
 - Unit tests with `Mock` and `FluentAssertions`
-- Authentication of users with .NET identity
 - Saving/Gettings messages with encryption
+
+# References
+
+[Customising the ASP.NET Core default UI](https://andrewlock.net/customising-aspnetcore-identity-without-editing-the-pagemodel/)
+[Unable to run SQL Server 2019 docker with volumes](https://stackoverflow.com/questions/65601077/unable-to-run-sql-server-2019-docker-with-volumes-and-get-error-setup-failed-co)
