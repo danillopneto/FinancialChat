@@ -45,6 +45,7 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Repositories
                                     .ThenInclude(s => s.Sender)
                                     .AsNoTracking()
                                     .Include(u => u.Users)
+                                    .OrderBy(r => r.Name)
                                     .AsNoTracking()
                                     .ToListAsync();
 

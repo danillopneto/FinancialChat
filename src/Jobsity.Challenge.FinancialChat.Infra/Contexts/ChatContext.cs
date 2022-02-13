@@ -14,7 +14,6 @@ namespace Jobsity.Challenge.FinancialChat.Infra.Contexts
         public ChatContext(DbContextOptions<ChatContext> options)
           : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

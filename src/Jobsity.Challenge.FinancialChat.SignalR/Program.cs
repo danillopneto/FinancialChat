@@ -1,6 +1,7 @@
 using Jobsity.Challenge.FinancialChat.CrossCutting;
 using Jobsity.Challenge.FinancialChat.Domain.Constants;
 using Jobsity.Challenge.FinancialChat.Infra.Configurations;
+using Jobsity.Challenge.FinancialChat.Infra.Enums;
 using Jobsity.Challenge.FinancialChat.SignalR.Hubs;
 using Jobsity.Challenge.FinancialChat.UseCases.Automappers;
 using Microsoft.Extensions.Options;
@@ -11,7 +12,7 @@ const string CorsPolicy = "signalr";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
-                      CorsPolicy, 
+                      CorsPolicy,
                       builder => builder.AllowAnyMethod()
                                         .AllowAnyHeader()
                                         .AllowCredentials()
@@ -44,7 +45,7 @@ builder.Services.AddHttpClients();
 builder.Services.AddAutoMapper(typeof(ConnectionsProfile));
 
 // Add DataBaseConfiguration
-builder.Services.AddDatabaseConfiguration(builder.Configuration);
+builder.Services.AddDatabaseConfiguration(builder.Configuration, LayerPresenter.SignalR);
 
 // Add Gateways
 builder.Services.AddGateways();
@@ -74,5 +75,7 @@ app.MapRazorPages();
 app.UseCors(CorsPolicy);
 
 app.MapHub<ChatHub>($"/{ConstantsHubs.DefaultChat}");
+
+app.Services.SetupDataBase(LayerPresenter.SignalR);
 
 app.Run();
